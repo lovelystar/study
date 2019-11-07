@@ -92,7 +92,7 @@ public class ClientOAuth2Config {
 	}
 	
 	private OAuth2ProtectedResourceDetails resources() {
-		
+		 
 		String accessTokenUri = env.getProperty("security.oauth2.client.access-token-uri"); // 엑세스 토큰 URI : /oauth/token
 		String userAuthorizationUri = env.getProperty("security.oauth2.client.user-authorization-uri"); // 사용자 인증 URI : /oauth/authorize
 		String clientID = env.getProperty("security.oauth2.client.id"); // 클라이언트 ID : sumin
