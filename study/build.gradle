@@ -5,7 +5,7 @@ plugins {
 	id 'war'
 }
 
-group = 'com.hard'
+group = 'com.hard.study'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -20,14 +20,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	
+	implementation 'org.springframework.security:spring-security-oauth2-client:5.2.0.RELEASE'
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.0.RELEASE'
+	
 	
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
 	implementation 'org.apache.tomcat:tomcat-jdbc'
 	implementation 'org.slf4j:slf4j-api:1.7.26'
 	implementation 'org.slf4j:jcl-over-slf4j:1.7.26'
 	implementation 'ch.qos.logback:logback-classic:1.2.3'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
-	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 	implementation 'org.aspectj:aspectjrt:1.9.2'
 	
 	implementation 'commons-fileupload:commons-fileupload:1.4'
@@ -45,9 +48,23 @@ dependencies {
 	
 	implementation 'com.googlecode.log4jdbc:log4jdbc:1.2'
 	
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'org.springframework.integration:spring-integration-websocket:5.2.0.RELEASE'
+	implementation 'org.springframework.integration:spring-integration-stomp:5.2.0.RELEASE'
 	
-	runtimeOnly 'mysql:mysql-connector-java'
+	// @EnableIntegration
+	implementation 'org.springframework.integration:spring-integration-event:5.2.0.RELEASE'
+	
+	// @EnableIntegration 사용하기위해 위의 한줄만 추가하면 com.faster..... 에러 나오는데 아래 3개 추가
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
+	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+	implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
+	
+	compileOnly 'org.projectlombok:lombok'
+	//runtimeOnly 'mysql:mysql-connector-java'
+	providedCompile 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

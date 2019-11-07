@@ -23,7 +23,7 @@
 <%-- 		<link href="<c:url value='/resources/css/gallery.css' />" rel="stylesheet" /> --%>
 		
 <%-- 		<script src="<c:url value='/resources/js/jquery-3.2.1.min.js' />"></script> --%>
-					
+		
 	</head>
 	<body class="body-home">
 		CLIENT SUCCESS

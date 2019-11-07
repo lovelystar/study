@@ -63,13 +63,16 @@ public class ClientDataSourceConfig {
 		sqlSessionFactory.setDataSource(dataSource);
 		sqlSessionFactory.setMapperLocations(applicationContext.getResources("classpath:mybatis/mapper/*.xml"));
 		sqlSessionFactory.setTypeAliasesPackage("com.hard.study");
+		
 		return sqlSessionFactory;
 		
 	}
 	
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+		
 		return new SqlSessionTemplate(sqlSessionFactory);
+		
 	}
 	
 }
