@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-
+	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -54,10 +54,13 @@ dependencies {
 	// @EnableIntegration
 	implementation 'org.springframework.integration:spring-integration-event:5.2.0.RELEASE'
 	
-	// @EnableIntegration 사용하기위해 위의 한줄만 추가하면 com.faster..... 에러 나오는데 아래 3개 추가
+	// @EnableIntegration 사용하기위해 위의 한줄만 추가하면 com.faster..... 에러
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
+	
 	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 	implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
+	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
 	
 	compileOnly 'org.projectlombok:lombok'
 	//runtimeOnly 'mysql:mysql-connector-java'
