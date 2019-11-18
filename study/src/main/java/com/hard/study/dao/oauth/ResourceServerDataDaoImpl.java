@@ -29,10 +29,10 @@ public class ResourceServerDataDaoImpl implements ResourceServerDataDao {
 		AuthorizationTokenVo tokenVo = new AuthorizationTokenVo();
 		
 		// AuthorizationTokenVo에서 getAuthorizationString(tokenValue);를 호출하면 Bearer를 자동으로 붙이도록 세팅해 둠.
-		String BearerToken = tokenVo.getAuthorizationString(authMap.get("access_token").toString());
+		String bearerToken = tokenVo.getAuthorizationString(authMap.get("access_token").toString());
 		
 		RetrofitApiService retrofitApiService = RetrofitApiUtil.retrofitApiGson(authMap.get("baseUrl").toString()).create(RetrofitApiService.class);
-		Call<UserInfoVo> call = retrofitApiService.callUserInfo(BearerToken);
+		Call<UserInfoVo> call = retrofitApiService.callUserInfo(bearerToken);
 		
 		return call.execute().body();
 		

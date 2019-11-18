@@ -21,7 +21,7 @@ public interface RetrofitApiService {
 	Call<AuthorizationTokenVo> callAuthorizationToken(@Header("Authorization") String authHeader, @FieldMap Map<String, Object> authTokenMap) throws Exception;
 	
 	// resource 서버에 접근해서 데이터 호출
-	@FormUrlEncoded
+//	@FormUrlEncoded // 해당 어노테이션은 반드시 @Field 어노테이션과 함께 써야 한다.
 	@POST("studyresourceserver/authenticated/username")
 	Call<UserInfoVo> callUserInfo(@Header("Authorization") String bearerToken) throws Exception;
 	

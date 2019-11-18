@@ -43,60 +43,43 @@ public class ClientController {
 	@Autowired
 	private ResourceServerDataService resourceServerDataService;
 	
-	// (custom 추가. cookie에 저장해서 확인하고 저장하고 등.)
 	@Autowired
 	private CookieService cookieService;
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		// client의 기존 인증정보( AccessToken )이 있는지 확인
 		if(restTemplate.getOAuth2ClientContext().getAccessToken() == null) {
-			restTemplate.getAccessToken(); // restTemplate의 resource를 가지고 동작한다. + 로그인이 되면 db의 redirect url로 이동
+			
+			// accessToken이 없는 경우 쿠키가 있는지 확인
+			// 쿠키 정보도 없으면
+			if(!cookieService.getCookie(request)) {
+				
+				// restTemplate의 resource를 가지고 동작한다. + 로그인이 되면 db의 redirect url로 이동
+				restTemplate.getAccessToken();
+				
+			}
+			
 		}
 		
 		ModelAndView mav = new ModelAndView();
 		
 		String accessToken = restTemplate.getAccessToken().toString();
+		String username = null;
 		
 		// accessToken이 null이 아니라면
 		if(accessToken != null) {
 			
-			// 원하는 동작 custom
-			Map<String, Object> authMap = new HashMap<String, Object>();
-			authMap.put("access_token", accessToken);
-			
-			// access_token으로 resource 서버에 접근하여 데이터 가져오기.
-			UserInfoVo userInfoVo = new UserInfoVo();
-			userInfoVo = resourceServerDataService.getUserInfo(authMap);
-			
-			String username = userInfoVo.getUsername();
-			
-			// null이 아니면 데이터 호출 성공
-			// (custom 추가. cookie에 저장해서 확인하고 저장하고 등.)
-			if(username != null) {
-				
-				Cookie cookie = null;
-				String cookieString = null;
-				
-				cookie = WebUtils.getCookie(request, username);
-				cookieString = cookie.getValue().toString();
-				
-//				if(cookie == null ||)
-				
-			}
-			
-			
-			
-			
-			// accessToken이 null이라면 _ /callback의 토큰 세팅하는 부분을 확인해보자
-		} else {
-			
-			// Exception
+			// 1. username 가져온다.
+			// 2. cookie를 확인해서 cookie가 없으면
+			// 3. cookie생성
+			username = cookieService.getUsernameCookieCheck(request, accessToken, response);
 			
 		}
 		
 		
-		
+		mav.addObject("username", username);
 		mav.setViewName("client");
 		
 		return mav;
