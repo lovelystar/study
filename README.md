@@ -15,10 +15,7 @@ callback 처리
 
 
 
-2019. 11. 25
-react
-redux
-redux-saga 적용
+# 2019. 11. 25 ( react + redux + redux-saga 적용 )
 
 + 선행 필요
   - ES6 이상
