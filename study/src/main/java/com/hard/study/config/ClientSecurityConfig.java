@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -33,15 +34,15 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 //		
 //	}
 	
-//	// security 안태우는 장소
-//	@Override
-//	public void configure(WebSecurity web) {
-//		
-//		web
-//			.ignoring()
-//				.antMatchers("/resources/**");
-//		
-//	}
+	// security 안태우는 장소
+	@Override
+	public void configure(WebSecurity web) {
+		
+		web
+			.ignoring()
+				.antMatchers("/resources/**");
+		
+	}
 	
 	// security 접근 권한
 	@Override
