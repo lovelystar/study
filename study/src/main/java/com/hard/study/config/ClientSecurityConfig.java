@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -61,11 +62,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// cors : 다른 외부 링크로부터 데이터를 받기위해 사용 ( ex. 부트스트랩 )
 		// csrf 보안 취약점 // disable 없애야 함 // csrf만 설정하면 403에러
+		// disable 해제
 		http
 			.cors()
 				.and()
 					.csrf()
-						.disable();
+						.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 		
 		http
 			.authorizeRequests()

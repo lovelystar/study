@@ -20,11 +20,48 @@
 
 import "regenerator-runtime/runtime";
 import { delay, call, put, all, select, take, takeEvery, takeLatest } from "redux-saga/effects";
+import * as createActionReducer from "../reducers/createActionReducer";
+import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
 
-export function* rootSaga() {
+export function* studyWatch() {
+	yield takeLatest(createActionReducer.clientServerRequest, studyAction);
+}
+
+export function* resourceWatch() {
+	yield takeLatest(createActionReducer.requestApiUsername, resourceAction);
+}
+
+// study ( client ) _ 현재 프로젝트 서버 호출
+function* studyAction(requestData, dispatch) {
 	
-	yield all({
+	try{
 		
-	});
+		const response = yield call([axiosStudy, axiosStudy.post], "/client/cookie/token", requestData.payload);
+		const cookieToken = yield put(createActionReducer.clinetServerReceived(response.data));
+		
+		axiosResource.defaults.headers.common["Authorization"] = cookieToken.payload;
+		
+		yield put(createActionReducer.requestApiUsername());
+		
+	} catch(error) {
+		
+		yield put(createActionReducer.appError(error));
+		
+	}
 	
-};
+}
+
+function* resourceAction() {
+	
+	try{
+		
+		const data = yield call([axiosResource, axiosResource.post], "/authenticated/username");
+		yield put(createActionReducer.receivedApiSuccess(data));
+		
+	} catch(error) {
+		
+		yield put(createActionReducer.appError(error));
+		
+	}
+	
+}

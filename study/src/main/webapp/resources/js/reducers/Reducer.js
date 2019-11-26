@@ -79,10 +79,4 @@ const reducer = (state = initState, action) => {
 	
 }
 
-export const rootReducer = combineReducers({
-	
-	reducer
-	
-});
-
-export default rootReducer;
+export default reducer;

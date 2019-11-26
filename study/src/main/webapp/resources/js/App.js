@@ -6,29 +6,20 @@ import Router from "./router/Router";
 // 여기선 Component가 되겠다.
 class App extends Component {
 	
-	// 쿠키 가져오기
-	static propTypes = {
-		cookies: instanceOf(Cookies).isRequired
-	}
-	
 	// constructor, super에 props를 넣는 이유는 명확하게 props를 사용하기 위해서
 	// props >> ...args가 props와 context까지 편하게 해결할 수 있음.
 	constructor(props){
-		// this.state 사용 불가능
 		super(props)
-		// this.state 사용 가능
-		
-		const { cookies } = props;
-		
-		this.state = {
-			name: cookies.get("name")
-		}
-		
+		this.state = {}
 	}
+	
+	state = {}
 	
 	render() {
 		return (
-			<Router />
+			<div>
+				<Router />
+			</div>
 		);
 	}
 }

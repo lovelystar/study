@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import com.hard.study.dao.oauth.CookieDao;
 import com.hard.study.vo.oauth.UserInfoVo;
@@ -31,6 +33,7 @@ public class CookieServiceImpl implements CookieService {
 	}
 	
 	// username과 cookie체크 + 생성
+	@Override
 	public String getUsernameCookieCheck(HttpServletRequest request, String accessToken, HttpServletResponse response) throws Exception {
 		
 		String username = null;
@@ -52,6 +55,13 @@ public class CookieServiceImpl implements CookieService {
 		}
 		
 		return username;
+		
+	}
+	
+	@Override
+	public String getCookieToken(HttpServletRequest request, Map<String, Object> map, HttpServletResponse response) throws Exception {
+		
+		return cookieDao.checkCookie(request, map, response);
 		
 	}
 	

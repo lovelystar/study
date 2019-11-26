@@ -3,26 +3,26 @@ package com.hard.study.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.web.util.WebUtils;
 
 import com.hard.study.dto.oauth.AuthorizationTokenDto;
 import com.hard.study.service.oauth.AuthorizationTokenService;
 import com.hard.study.service.oauth.CookieService;
-import com.hard.study.service.oauth.ResourceServerDataService;
 import com.hard.study.vo.common.CommonCode;
 import com.hard.study.vo.oauth.AuthorizationTokenVo;
 import com.hard.study.vo.oauth.UserInfoVo;
@@ -41,14 +41,11 @@ public class ClientController {
 	private AuthorizationTokenService authorizationTokenService;
 	
 	@Autowired
-	private ResourceServerDataService resourceServerDataService;
-	
-	@Autowired
 	private CookieService cookieService;
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		System.out.println("client 호출");
 		// client의 기존 인증정보( AccessToken )이 있는지 확인
 		if(restTemplate.getOAuth2ClientContext().getAccessToken() == null) {
 			
@@ -135,6 +132,36 @@ public class ClientController {
 		}
 		
 		return mav;
+		
+	}
+	
+	// react cookie 조회 axios
+	@ResponseBody
+	@RequestMapping(value="/cookie/token", produces=MediaType.APPLICATION_JSON_VALUE)
+	public String cookieToken(HttpServletRequest request, HttpServletResponse response, @RequestBody UserInfoVo vo) throws Exception {
+		
+		String cookieToken = null;
+		String username = null;
+		
+		try {
+			
+			String accessToken = restTemplate.getAccessToken().toString();
+			Map<String, Object> reqMap = new HashMap<String, Object>();
+			reqMap.put("access_token", accessToken);
+			username = vo.getUsername();
+			
+			if(username != null) {
+				
+				reqMap.put("username", username);
+				cookieToken = "Bearer " + cookieService.getCookieToken(request, reqMap, response);
+				
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return cookieToken;
 		
 	}
 	

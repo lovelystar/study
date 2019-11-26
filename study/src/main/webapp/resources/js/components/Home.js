@@ -79,9 +79,16 @@
 
 import React, { Component } from "react";
 import { connect, userStore } from "react-redux";
+import { withCookies, Cookies } from "react-cookie";
+import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
 import { instanceOf } from "prop-types";
+import * as createActionReducer from "../reducers/createActionReducer";
 
 class Home extends Component {
+	
+	static propTypes = {
+		cookies: instanceOf(Cookies).isRequired
+	};
 	
 	// 생성자 메소드로 컴포넌트 생성될 때 한번만 실행된다.
 	// state값 설정
@@ -89,7 +96,11 @@ class Home extends Component {
 		// 여기선 this 사용 불가능
 		super(props)
 		// 여기선 this 사용 가능
+		
+		const { cookies } = this.props;
+		
 		this.state = {
+			csrf: cookies.get("XSRF-TOKEN"),
 			key: "value",
 			error: "err",
 			num: 0,
@@ -98,8 +109,11 @@ class Home extends Component {
 		
 	}
 	
+	// 컴포넌트가 만들어지고 render가 호출된 이후
+	// ajax 코드 작성
 	componentDidMount(){
 		console.log("componentDidMount");
+		this.getStudyCookieToken();
 	}
 	
 	shouldComponentUpdate(){
@@ -115,13 +129,40 @@ class Home extends Component {
 		console.log("componentWillUnmount");
 	}
 	
+	// async () 이건 >> "async function () {}" 의 축약
+	getStudyCookieToken = async () => {
+		
+		const username = document.getElementById("username").value;
+		
+		// username이 null이 아닐 때
+		if(username != null) {
+			
+			axiosStudy.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+			axiosResource.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+			
+			const reqData = {
+				"username" : username
+			};
+			
+			this.props.getCookieToken(reqData);
+			
+		}
+		
+	}
+	
 	render() {
 		
 		return (
 				
+			<div>
 				<div>TTTTTTTTTTTTTTTTTTTTTTTTTTTT</div>
-				
-		)
+				<p></p>
+				<span>login user : {this.props.username}</span>
+				<p></p>
+				<button onClick={this.props.logout}>LOGOUT</button>
+			</div>
+			
+		);
 		
 	}
 	
@@ -135,7 +176,10 @@ const mapStateToProps = (state, props) => {
 	
 	return ({
 		
-		state: state
+		state: state,
+		username: state.createActionReducer.username,
+		cookies: props.cookies,
+		userCookie: state.createActionReducer.payload
 		
 	});
 	
@@ -154,7 +198,8 @@ const mapDispatchToProps = dispatch => {
 	//		dispatch(action.Err(error));
 	// }
 	return {
-		
+		getCookieToken: (reqData) => dispatch(createActionReducer.clientServerRequest(reqData)),
+		logout: () => dispatch(createActionReducer.logout())
 	};
 	
 }
@@ -162,9 +207,9 @@ const mapDispatchToProps = dispatch => {
 // 컨테이너 컴포넌트를 store에 연결시키는 것이 connect
 // HOME 컴포넌트의 Container 컴포넌트
 // HOME 컴포넌트를 어플리케이션의 데이터 레이어와 묶는 역할
-export default connect(
+export default withCookies(connect(
 		
 	mapStateToProps,
 	mapDispatchToProps
 	
-)(Home);
+)(Home));

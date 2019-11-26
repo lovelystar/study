@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
-import rootReducer from "../reducers/Reducer";
+import comReducer from "../reducers/combineReducers";
 
 export default function storeConfig() {
 	
@@ -10,7 +10,7 @@ export default function storeConfig() {
 	
 	return{
 		
-		...createStore(rootReducer, applyMiddleware(logger, sagaMiddleware)),
+		...createStore(comReducer, applyMiddleware(logger, sagaMiddleware)),
 		runSaga: sagaMiddleware.run
 		
 	}
