@@ -20,7 +20,7 @@
 
 import "regenerator-runtime/runtime";
 import { delay, call, put, all, select, take, takeEvery, takeLatest } from "redux-saga/effects";
-import * as createActionReducer from "../reducers/createActionReducer";
+import * as createActionReducer from "../reducers/CreateActionReducer";
 import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
 
 export function* studyWatch() {
@@ -28,7 +28,17 @@ export function* studyWatch() {
 }
 
 export function* resourceWatch() {
-	yield takeLatest(createActionReducer.requestApiUsername, resourceAction);
+	// takeLatest = 액션 호출 시에 같은 액션이 실행 중이면 그 액션은 파기되고, 마지막 호출만 실행
+	// POST, PUT, DELETE 같은 리소스 변경 메소드에 이용
+	yield takeLatest(createActionReducer.requestResource, resourceAction);
+}
+
+export function* logoutWatch() {
+	// takeEvery = 모든 액션시마다 실행된다.
+	// GET 메소드에 이용
+	yield takeEvery(createActionReducer.logout, logoutAction);
+//	yield takeLatest(createActionReducer.logoutSucceed, logoutSuccess);
+	
 }
 
 // study ( client ) _ 현재 프로젝트 서버 호출
@@ -36,12 +46,15 @@ function* studyAction(requestData, dispatch) {
 	
 	try{
 		
+		// call로 호출하면 .data로 내려받은 데이터 확인
+		// put = payload로 데이터 확인
 		const response = yield call([axiosStudy, axiosStudy.post], "/client/cookie/token", requestData.payload);
 		const cookieToken = yield put(createActionReducer.clinetServerReceived(response.data));
 		
 		axiosResource.defaults.headers.common["Authorization"] = cookieToken.payload;
 		
-		yield put(createActionReducer.requestApiUsername());
+		// PUT = 액션을 호출
+		yield put(createActionReducer.requestResource(requestData));
 		
 	} catch(error) {
 		
@@ -51,12 +64,15 @@ function* studyAction(requestData, dispatch) {
 	
 }
 
-function* resourceAction() {
+function* resourceAction(requestData) {
 	
 	try{
 		
-		const data = yield call([axiosResource, axiosResource.post], "/authenticated/username");
-		yield put(createActionReducer.receivedApiSuccess(data));
+		const authority = requestData.payload.payload;
+		const data = yield call([axiosResource, axiosResource.post], "/authenticated/authority", authority);
+//		const data = yield call([axiosResource, axiosResource.post], "/authenticated/username", authority);
+		
+		yield put(createActionReducer.receivedResourceSucceed(data));
 		
 	} catch(error) {
 		
@@ -65,3 +81,36 @@ function* resourceAction() {
 	}
 	
 }
+
+// 로그아웃
+function* logoutAction(requestData, dispatch) {
+	
+//	try{
+//		
+//		const logoutData = yield call([axiosStudy, axiosStudy.post], "/client/logout", requestData.payload);
+//		yield put(createActionReducer.logoutSucceed());
+//		
+//		window.location.reload();
+//		
+//	} catch(error) {
+//		
+//		yield put(createActionReducer.appError(error));
+//		
+//	}
+	
+}
+
+// 로그아웃 성공 redirect
+//function* logoutSuccess() {
+//	
+//	try {
+//		
+//		const logoutData = yield call([axiosStudy, axiosStudy.get], "/client/");
+//		
+//	} catch(error) {
+//		
+//		yield put(createActionReducer.appError(error));
+//		
+//	}
+//	
+//}

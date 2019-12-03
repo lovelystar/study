@@ -3,12 +3,15 @@ package com.hard.study.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.WebUtils;
 
 import com.hard.study.dto.oauth.AuthorizationTokenDto;
 import com.hard.study.service.oauth.AuthorizationTokenService;
@@ -45,20 +49,22 @@ public class ClientController {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("client 호출");
+
 		// client의 기존 인증정보( AccessToken )이 있는지 확인
 		if(restTemplate.getOAuth2ClientContext().getAccessToken() == null) {
-			
+			System.out.println("restTemplate.getOAuth2ClientContext의 accessToken이 null이라 쿠키 확인합니다..");
 			// accessToken이 없는 경우 쿠키가 있는지 확인
 			// 쿠키 정보도 없으면
 			if(!cookieService.getCookie(request)) {
 				
+				System.out.println("restTemplate.getOAuth2ClientContext의 accessToken이 null이고, 쿠키가 없으니 resource서버 접근");
 				// restTemplate의 resource를 가지고 동작한다. + 로그인이 되면 db의 redirect url로 이동
 				restTemplate.getAccessToken();
 				
 			}
 			
 		}
+		
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -165,13 +171,52 @@ public class ClientController {
 		
 	}
 	
-	@RequestMapping("/cpage")
-	public ModelAndView clientPage() throws Exception {
+	@ResponseBody
+	@RequestMapping(value="/logout", method=RequestMethod.POST)
+	public String logout(HttpSession session, HttpServletRequest req, HttpServletResponse res, @RequestBody UserInfoVo vo) throws Exception {
+//		
+//		res.sendRedirect("http://localhost:8082/studyoauthserver/logout");
+//		
+//		
+//		
+		String username = null;
+		String logout = null;
+		AuthorizationTokenDto tokenDto = new AuthorizationTokenDto();
 		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("client");
-		
-		return mav;
+		try {
+			
+			username = vo.getUsername();
+			
+			// session 초기화
+			session.invalidate();
+			
+			// 쿠키 삭제
+			Cookie clientCookie = WebUtils.getCookie(req, username);
+			
+			clientCookie.setPath("/study");
+			clientCookie.setMaxAge(0);
+			
+			res.addCookie(clientCookie);
+			
+			String baseUrl = env.getProperty("config.oauth2.oauth-base-uri");
+			tokenDto.setBaseUrl(baseUrl);
+			
+			// client 서버 인증 정보 초기화
+			restTemplate.getOAuth2ClientContext().setAccessToken(null);
+//			restTemplate.getOAuth2ClientContext().setAccessToken(new DefaultOAuth2AccessToken(""));
+			
+			// 인증 서버 인증 정보 초기화
+			authorizationTokenService.oauthServerLogout(tokenDto);
+			
+			logout = "logout success";
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+		return logout;
+//		return "redirect:http://localhost:8082/studyoauthserver/logout";
 		
 	}
 	

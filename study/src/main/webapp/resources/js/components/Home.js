@@ -80,9 +80,11 @@
 import React, { Component } from "react";
 import { connect, userStore } from "react-redux";
 import { withCookies, Cookies } from "react-cookie";
-import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
 import { instanceOf } from "prop-types";
-import * as createActionReducer from "../reducers/createActionReducer";
+import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
+import * as createActionReducer from "../reducers/CreateActionReducer";
+import Header from "./Header";
+import Loading from "./Loading";
 
 class Home extends Component {
 	
@@ -94,19 +96,21 @@ class Home extends Component {
 	// state값 설정
 	constructor(props){
 		// 여기선 this 사용 불가능
-		super(props)
+		super(props);
 		// 여기선 this 사용 가능
 		
 		const { cookies } = this.props;
-		
 		this.state = {
 			csrf: cookies.get("XSRF-TOKEN"),
+			username: document.getElementById("username").value,
 			key: "value",
 			error: "err",
 			num: 0,
 			tf: true
 		}
 		
+		this.logoutBtn = this.logoutBtn.bind(this);
+
 	}
 	
 	// 컴포넌트가 만들어지고 render가 호출된 이후
@@ -132,16 +136,22 @@ class Home extends Component {
 	// async () 이건 >> "async function () {}" 의 축약
 	getStudyCookieToken = async () => {
 		
-		const username = document.getElementById("username").value;
+		// state에 호출해 둠.
+//		const username = document.getElementById("username").value;
 		
 		// username이 null이 아닐 때
-		if(username != null) {
+//		if(username != null) {
+		
+		// state 초기에 세팅
+		if(this.state.username != null) {
 			
 			axiosStudy.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+			axiosAuth.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
 			axiosResource.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
 			
 			const reqData = {
-				"username" : username
+				"username" : this.state.username,
+				"userName" : this.state.username
 			};
 			
 			this.props.getCookieToken(reqData);
@@ -150,16 +160,96 @@ class Home extends Component {
 		
 	}
 	
+	logoutBtn = async() => {
+		
+		// let checkValue = username.value;
+		// getStudyCookieToken에서 설정한 username을 여기서 또 쓸 수는 없다 ( const 이므로 )
+		// 값을 가져오려면 username.value로 가져올 수 있다.
+		
+		let checkValue = this.state.username;
+		
+		axiosStudy.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+		axiosAuth.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+		axiosResource.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
+		
+		let strData = checkValue;
+		let objData = {
+			"username" : checkValue
+		};
+		
+		this.props.studyLogout(objData);
+		
+	}
+	
 	render() {
 		
+		// return 하기 전에 가져온 list, map custom
+		// 갑자기 이 reducer는 어디서 나온거야;
+		const authority = this.props.state.createActionReducer.payload;
+		const resourceAuthorityList = 
+			
+			authority != null ?
+				
+				// 해당 정보는 resource 서버의
+				// roleHierarchy.xml의 getUserResource에서 가져온다.
+				
+				// List<Map<String, Object>> 형태를 뽑아내는 방법
+				// .map이라는 자바스크립트의 내장함수를 사용
+				
+				// (list) => (...) 를 풀어쓰면 function 익명(list) (...)
+				// 즉, .map을 이용하여 반복시키고 내부내용은 list라는 변수에 담는다.
+				
+				// 중괄호 || 소괄호    =>  js의 모든 함수는 return이 있어야 한다.
+				// {}로 묶으면 function ...() {} >>> return이 명시되어 있다.
+				// ()로 묶으면 function ...() () >>> ()안의 값이 return이 된다. ( return 생략 o ) + html tag나 component를 담는다.
+				// []로 묶으면 function ...() [] >>> []안의 값이 return이 된다. ( return 생략 o ) + Array나 여러개의 component를 담는다.
+					
+					authority.map((list, i) => (
+					<tr key={list.idxOauthResource}>
+						<td>{list.resourceName}</td>
+						<td>{list.resourceType}</td>
+						<td>{list.resourceId}</td>
+						<td>{list.resourcePattern}</td>
+						<td>{list.httpMethod}</td>
+						<td>{list.authority}</td>
+						<td>{list.userName}</td>
+						<td>{i + 1}</td>
+					</tr>
+				)) : null;
+				
+//				<span>login user : {this.props.username}</span>
+				
 		return (
 				
 			<div>
-				<div>TTTTTTTTTTTTTTTTTTTTTTTTTTTT</div>
+				<Header />
+				<span>메인페이지</span>
 				<p></p>
-				<span>login user : {this.props.username}</span>
+				<Loading />
+				<div id="divResourceAuthorityForm">
+					<table border="1">
+						
+						<thead>
+							<tr>
+								<th>resource name</th>
+								<th>resource type</th>
+								<th>resource url</th>
+								<th>resource url pattern</th>
+								<th>resource http method</th>
+								<th>resource authority</th>
+								<th>resource user</th>
+								<th>count</th>
+							</tr>
+						</thead>
+						
+						<tbody id="tbodyResourceAuthorityForm">
+							{resourceAuthorityList}
+						</tbody>
+						
+					</table>
+				</div>
 				<p></p>
-				<button onClick={this.props.logout}>LOGOUT</button>
+				<button onClick={this.logoutBtn}>logout</button>
 			</div>
 			
 		);
@@ -169,7 +259,8 @@ class Home extends Component {
 }
 
 // state - props
-// store안의 state값을 props로 연결해준다.
+// (function) store안의 state값을 props로 연결해준다.
+// props가 명시될 경우 이를 통해 함수 내부에서 컴포넌트의 props 값에 접근할 수 있다.
 // reducer를 합치게 되면
 // 호출할 때 state.합칠 때 key.합칠 때 value
 const mapStateToProps = (state, props) => {
@@ -186,8 +277,9 @@ const mapStateToProps = (state, props) => {
 }
 
 // dispatch - props
-// 액션 생성자를 만들어서 액션을 생성하고
+// 액션 생성자를 만들어서 액션을 생성하고 ( reducer )
 // 해당 액션을 dispatch하는 함수를 만든 후, 이를 props로 연결
+// 컴포넌트의 특정 함수형 props가 실행 됐을 때, 개발자가 지정한 action을 dispatch 하도록 설정
 const mapDispatchToProps = dispatch => {
 	
 	// 예시 ( onInc, onDec ... )
@@ -197,9 +289,13 @@ const mapDispatchToProps = dispatch => {
 	//		const error: getRandomColor(); >> https://velopert.com/3346
 	//		dispatch(action.Err(error));
 	// }
+
+	// onClick을 확인해보면 this.props.logout이 있는데 props뒤에 있는 logout을 이용하여
+	// 액션을 dispatch 할 것이라고 만드는 부분이다.
 	return {
 		getCookieToken: (reqData) => dispatch(createActionReducer.clientServerRequest(reqData)),
-		logout: () => dispatch(createActionReducer.logout())
+//		studyLogout: () => dispatch(createActionReducer.logout())
+		studyLogout: (objData) => dispatch(createActionReducer.logout(objData))
 	};
 	
 }

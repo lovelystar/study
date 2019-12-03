@@ -28,6 +28,10 @@ import App from "./App";
 import storeConfig from "./store/Store";
 import { rootSaga } from "./saga/RootSaga";
 
+// 아래 부트스트랩 설정을 해줘야 실제로 적용된다.
+// component들만 추가해서는 적용 안됨.
+import "bootstrap/dist/css/bootstrap.css";
+
 // createAction redux-action 생성시 라이브러리를 사용하는 방법도 있다.
 // store는 redux에서 가장 핵심적인 인스턴스이며
 // 이 안에 현재 상태를 내장하고 있다.

@@ -7,4 +7,6 @@ public interface AuthorizationTokenDao {
 	
 	public AuthorizationTokenVo getAuthorizationToken(AuthorizationTokenDto tokenDto) throws Exception;
 	
+	public void oauthServerLogout(AuthorizationTokenDto tokenDto) throws Exception;
+	
 }

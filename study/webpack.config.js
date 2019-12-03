@@ -10,6 +10,9 @@ var fileSys = require("fs");
 var reduxSaga = path.join(__dirname, "src");
 var nodeModules = path.join(__dirname, "node_modules");
 
+// 적정사이즈의 bundle을 생성하고 관리
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
 // src폴더, node_modules폴더가 있는지 판단
 if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 	
@@ -34,7 +37,10 @@ if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 			new webpack.HotModuleReplacementPlugin(), // dev-server 모드에서 Hot Module Replace를 가능하게 해준다.
 			new webpack.NoEmitOnErrorsPlugin(), // 컴파일 도중 오류가 발생한 리소스들은 제외하고 bundling한다.
 			new webpack.DefinePlugin({ // 컴파일할 코드에서 특정 문자열을 설정한 값으로 치환.
-				"process.env.NODE_ENV" : JSON.stringify("development")
+				"process.env.NODE_ENV" : JSON.stringify("development"),
+				"REACT_APP_WEBPACK_CLIENT_HOST" : JSON.stringify("http://localhost:8081/study"),
+				"REACT_APP_WEBPACK_AUTH_HOST" : JSON.stringify("http://localhost:8082/studyoauthserver"),
+				"REACT_APP_WEBPACK_RESOURCE_HOST" : JSON.stringify("http://localhost:8083/studyresourceserver")
 			})
 		],
 		module:{

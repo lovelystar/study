@@ -21,4 +21,11 @@ public class AuthorizationTokenServiceImpl implements AuthorizationTokenService 
 		
 	}
 	
+	@Override
+	public void oauthServerLogout(AuthorizationTokenDto tokenDto) throws Exception {
+		
+		authorizationTokenDao.oauthServerLogout(tokenDto);
+		
+	}
+	
 }

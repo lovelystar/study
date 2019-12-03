@@ -63,6 +63,12 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 		// cors : 다른 외부 링크로부터 데이터를 받기위해 사용 ( ex. 부트스트랩 )
 		// csrf 보안 취약점 // disable 없애야 함 // csrf만 설정하면 403에러
 		// disable 해제
+		
+		// CookieCsrfTokenRepository.withHttpOnlyFalse() 는 csrf token 새성
+		// 주의해야 할 점은
+		// 쿠키에는 "XSRF-TOKEN"
+		// 헤더에는 "X-XSRF-TOKEN"
+		// csrf token을 넘기지 않으면 403에러
 		http
 			.cors()
 				.and()

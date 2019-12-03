@@ -51,4 +51,19 @@ public class AuthorizationTokenDaoImpl implements AuthorizationTokenDao {
 		
 	}
 	
+	@Override
+	public void oauthServerLogout(AuthorizationTokenDto tokenDto) throws Exception {
+		
+		RetrofitApiService retrofitApiService = RetrofitApiUtil.retrofitApiGson(tokenDto.getBaseUrl()).create(RetrofitApiService.class);
+		
+		String authStr = env.getProperty("security.oauth2.client.id") + ":" + env.getProperty("security.oauth2.client.client-secret");
+		byte[] encodedAuth = Base64.encodeBase64(authStr.getBytes(StandardCharsets.UTF_8));
+		String authHeader = "Basic " + new String(encodedAuth);
+		
+		Call<Void> call = retrofitApiService.oauthServerLogout(authHeader);
+		
+		call.execute().body();
+		
+	}
+	
 }

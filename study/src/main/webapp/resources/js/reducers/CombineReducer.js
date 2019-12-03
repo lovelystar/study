@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import createActionReducer from "./createActionReducer";
+import createActionReducer from "./CreateActionReducer";
 
 export const comReducer = combineReducers({
 	createActionReducer

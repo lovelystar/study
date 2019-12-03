@@ -14,7 +14,7 @@
 		}
 	},
 	"keywords": [
-		"ES6",
+		"overES6",
 		"react",
 		"redux",
 		"redux-saga",
@@ -35,7 +35,10 @@
 	],
 	"license": "Apache-2.0",
 	"scripts": {
-		"watch": "webpack --watch -d"
+		"watch": "webpack --watch -d",
+		"bundle-dev": "webpack --mode development --optimize-minimize",
+		"bundle": "webpack--mode production --optimize-minimize",
+		"//": "webpack-dev-server --open --mode development // need npm i --save-dev html-webpack-plugin webpack-dev-server"
 	},
 	"bugs": {
 		"url": "https://www.naver.com",
@@ -60,7 +63,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.19.0",
-		"bootstrap": "^4.3.1",
+		"bootstrap": "^4.4.1",
 		"jquery": "^3.4.1",
 		"moment": "^2.24.0",
 		"react": "^16.9.0",
@@ -88,6 +91,7 @@
 		"babel-loader": "^8.0.6",
 		"npm-install-webpack-plugin": "^4.0.5",
 		"webpack": "^4.41.0",
+		"webpack-bundle-analyzer": "^3.6.0",
 		"webpack-cli": "^3.3.9"
 	}
 }

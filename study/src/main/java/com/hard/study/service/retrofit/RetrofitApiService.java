@@ -25,4 +25,8 @@ public interface RetrofitApiService {
 	@POST("studyresourceserver/authenticated/username")
 	Call<UserInfoVo> callUserInfo(@Header("Authorization") String bearerToken) throws Exception;
 	
+	// 로그아웃은 ".../logout"으로 요청되고 기본적으로 POST
+	@POST("studyoauthserver/logout")
+	Call<Void> oauthServerLogout(@Header("Authorization") String authHeader) throws Exception;
+	
 }
