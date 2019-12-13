@@ -1,0 +1,11 @@
+@import "~open-color/open-color";
+@import "~include-media/dist/include-media";
+
+// 반응형 디자인 코드를 위해서 추가
+// breakpoints << 변수명 변경하면 안돼요!
+$breakpoints: (
+    small: 376px,
+    medium: 768px,
+    large: 1024px,
+    huge: 1200px,
+);

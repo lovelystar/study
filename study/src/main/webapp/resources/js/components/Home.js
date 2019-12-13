@@ -165,7 +165,7 @@ class Home extends Component {
 		// let checkValue = username.value;
 		// getStudyCookieToken에서 설정한 username을 여기서 또 쓸 수는 없다 ( const 이므로 )
 		// 값을 가져오려면 username.value로 가져올 수 있다.
-		
+		// this.state{} 에서 선언해줌.
 		let checkValue = this.state.username;
 		
 		axiosStudy.defaults.headers.common["X-XSRF-TOKEN"] = this.state.csrf;
@@ -218,12 +218,12 @@ class Home extends Component {
 				)) : null;
 				
 //				<span>login user : {this.props.username}</span>
-				
+		
 		return (
 				
 			<div>
 				<Header />
-				<span>메인페이지</span>
+				<span>Client 테스트</span>
 				<p></p>
 				<Loading />
 				<div id="divResourceAuthorityForm">
@@ -249,7 +249,9 @@ class Home extends Component {
 					</table>
 				</div>
 				<p></p>
-				<button onClick={this.logoutBtn}>logout</button>
+
+				<button onClick={this.logoutBtn}>Logout 버튼</button>
+				
 			</div>
 			
 		);

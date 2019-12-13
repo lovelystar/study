@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import { studyWatch, resourceWatch, logoutWatch } from "./Saga";
+import { studyWatch, resourceWatch, logoutWatch, regContentsWatch } from "./Saga";
 
 export function* rootSaga() {
 	
@@ -7,7 +7,8 @@ export function* rootSaga() {
 		
 		studyWatch(),
 		resourceWatch(),
-		logoutWatch()
+		logoutWatch(),
+		regContentsWatch(),
 		
 	]);
 	

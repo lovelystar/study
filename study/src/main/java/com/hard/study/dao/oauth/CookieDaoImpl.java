@@ -134,7 +134,7 @@ public class CookieDaoImpl implements CookieDao {
 		try {
 			
 			int maxAge = map.get("maxAge") == null ? 0 : (int) map.get("maxAge");
-			maxAge = maxAge != 0 ? maxAge : 24 * 60 * 60;
+			maxAge = maxAge != 0 ? maxAge : 3 * 24 * 60 * 60;
 			
 			String accessToken = map.get("access_token").toString();
 			String accessTokenEncrypt = "suminToken" + aes.AES_Encrypt(accessToken);

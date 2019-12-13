@@ -12,7 +12,7 @@ public class TestController {
 	public ModelAndView index() throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("test");
+		mav.setViewName("index");
 		
 		return mav;
 		
@@ -22,7 +22,7 @@ public class TestController {
 	public ModelAndView testPage() throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("test");
+		mav.setViewName("index");
 		
 		return mav;
 		

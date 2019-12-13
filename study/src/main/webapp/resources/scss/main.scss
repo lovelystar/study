@@ -1,0 +1,191 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+ol, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+$width: 100px;
+$height: 100px;
+$size: 200px;
+$location: 50%;
+
+@mixin place-at-center {
+    top: $location;
+    left: $location;
+    transform: translate(-50%, -50%);
+}
+
+@mixin calc($size) {
+    $calculated: 10px * $size;
+    width: $calculated;
+    height: $calculated;
+}
+
+.outside {
+    background: yellow;
+    border: 3px solid #59bce0;
+    width: $size;
+    height: $size;
+
+    &:hover {
+        background: blue;
+    }
+    &:active {
+        background: yellow;
+    }
+
+    .inside {
+        width: $width;
+        height: $height;
+        background: yellowgreen;
+        @include place-at-center();
+    }
+
+    .box {
+        
+        display: flex;
+        cursor:pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: black;
+        }
+
+        &.one {
+            background: red;
+            @include calc(1);
+        }
+    
+        &.two {
+            background: orange;
+            @include calc(2);
+        }
+    
+        &.three {
+            background: yellow;
+            @include calc(3);
+        }
+    
+        &.four {
+            background: green;
+            @include calc(4);
+        }
+    
+        &.five {
+            background: blue;
+            @include calc(5);
+        }
+    
+        &.six {
+            background: indigo;
+            @include calc(6);
+        }
+    
+        &.seven {
+            background: purple;
+            @include calc(7);
+        }
+
+    }
+
+}
+
+.uploadHeader {
+    display: none;
+    position: relative;
+    color: #666666;
+    border-bottom: 1px solid #f3f3f3;
+    height: 40px;
+
+
+    input[type='checkbox'] {
+        display:none;
+    }
+
+    label {
+        margin: 12px;
+        width: 15px;
+        height: 15px;
+        background: #ffffff;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08);
+        border: 1px solid #d6d6d6;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+    span {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        position: absolute;
+        top: 0;
+    }
+
+    input[type='checkbox']:checked + label:before {
+        position: absolute;
+        top: 6px;
+        left: 14px;
+        content: url("../img/gallery-check.png");
+        width: 15px;
+        height: 15px;
+    }
+
+}
+
+.uploadList {
+
+    li {
+        cursor: default;
+        position: relative;
+        height: 34px;
+        line-height: 34px;
+        
+        span {
+            cursor: pointer;
+            display: inline-block;
+            height: 30px;
+            position: absolute;
+            top: 0;
+
+            &:nth-child(2n) {
+                width: 80px;
+                right: 100px;
+                text-align: right;
+            }
+
+        }
+
+        input[type='checkbox'] {
+            display:none;
+        }
+        
+        label {
+            margin: 10px 12px 0 12px;
+            width: 15px;
+            height: 15px;
+            background: #ffffff;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08);
+            border: 1px solid #d6d6d6;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        input[type='checkbox']:checked + label:before {
+            position: absolute;
+            top: 0px;
+            left: 14px;
+            content: url("../img/gallery-check.png");
+            width: 15px;
+            height: 15px;
+        }
+
+    }
+}
+
+.uploadDelete {
+    display: none;
+}

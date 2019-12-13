@@ -83,7 +83,7 @@ public class ClientController {
 		
 		
 		mav.addObject("username", username);
-		mav.setViewName("client");
+		mav.setViewName("index");
 		
 		return mav;
 		
@@ -174,49 +174,35 @@ public class ClientController {
 	@ResponseBody
 	@RequestMapping(value="/logout", method=RequestMethod.POST)
 	public String logout(HttpSession session, HttpServletRequest req, HttpServletResponse res, @RequestBody UserInfoVo vo) throws Exception {
-//		
-//		res.sendRedirect("http://localhost:8082/studyoauthserver/logout");
-//		
-//		
-//		
+		
 		String username = null;
 		String logout = null;
-		AuthorizationTokenDto tokenDto = new AuthorizationTokenDto();
 		
-		try {
+		try{
 			
 			username = vo.getUsername();
+			logout = "succeed";
 			
-			// session 초기화
+			// 세션 초기화
 			session.invalidate();
 			
 			// 쿠키 삭제
 			Cookie clientCookie = WebUtils.getCookie(req, username);
-			
 			clientCookie.setPath("/study");
 			clientCookie.setMaxAge(0);
 			
 			res.addCookie(clientCookie);
 			
-			String baseUrl = env.getProperty("config.oauth2.oauth-base-uri");
-			tokenDto.setBaseUrl(baseUrl);
-			
-			// client 서버 인증 정보 초기화
+			// client서버 인증 초기화
 			restTemplate.getOAuth2ClientContext().setAccessToken(null);
-//			restTemplate.getOAuth2ClientContext().setAccessToken(new DefaultOAuth2AccessToken(""));
-			
-			// 인증 서버 인증 정보 초기화
-			authorizationTokenService.oauthServerLogout(tokenDto);
-			
-			logout = "logout success";
 			
 		} catch(Exception e) {
 			
 			e.printStackTrace();
 			
 		}
+		
 		return logout;
-//		return "redirect:http://localhost:8082/studyoauthserver/logout";
 		
 	}
 	

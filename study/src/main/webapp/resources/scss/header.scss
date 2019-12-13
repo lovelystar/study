@@ -1,0 +1,44 @@
+@import "main"; // webpack의 sass-loader부분 중 includePaths에 경로추가 해서 ../../ 생략하도록 변경
+@import "break";
+
+.reactButton {
+    background: #59bce0;
+    transition: all 0.2s ease-in;
+    display: inline-block;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    color: #ffffff;
+    position: fixed;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+
+    @include place-at-center();
+
+    width: 1200px;
+
+    // 반응형
+    
+    @include media("<huge") {
+        width: 1024px;
+    }
+
+    @include media("<large") {
+        width: 768px;
+    }
+
+    @include media("<medium") {
+        width: 90%;
+    }
+    
+    &:hover {
+        background: red;
+    }
+
+    &:active {
+        background: blue;
+    }
+
+}

@@ -21,6 +21,10 @@
 import React, { Component } from "react";
 import { BrowserRouter as BRouter, Route, Switch } from "react-router-dom";
 import Home from "../components/Home";
+import Swiper from "../components/Swiper";
+import Style from "../components/Style";
+import Upload from "../components/Upload";
+import Data from "../components/Data";
 
 class Router extends Component {
 	
@@ -39,6 +43,10 @@ class Router extends Component {
 				<BRouter>
 					<Switch>
 						<Route path="/study/client" exact component={Home} />
+						<Route path="/study/swiper" exact component={Swiper} />
+						<Route path="/study/style" exact component={Style} />
+						<Route path="/study/upload" exact component={Upload} />
+						<Route path="/study/data" exact component={Data} />
 					</Switch>
 				</BRouter>
 		);

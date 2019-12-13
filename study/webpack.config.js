@@ -5,6 +5,9 @@ var path = require("path");
 var webpack = require("webpack");
 var fileSys = require("fs");
 
+// 인터넷 환경에 따라 자동으로 -webkit이나 -ms 같은 접두어를 붙여줌
+const autoprefixer = require("autoprefixer");
+
 // __dirname = ............../study ( 프로젝트 경로 )
 // path.join(__dirname, 'src') = ...../study/src
 var reduxSaga = path.join(__dirname, "src");
@@ -63,17 +66,81 @@ if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 						}
 					]
 				},
+				// css 모듈 설정
 				{
 					test: /\.css$/,
-					loader: "style-loader"
+					use: [
+						require.resolve("style-loader"), // 스타일을 불러와서 페이지에서 활성화
+						{
+							loader: require.resolve("css-loader"), // import와 url(...) 구문을 require 기능을 통하여 처리
+							options: {
+								importLoaders: 1,
+								//modules: true, // css module 활성화
+								localIdentName: "[path][name]__[local]--[hash:base64:5]" // css module 활성화
+							},
+						},
+					],
 				},
 				{
-					test: /\.css$/,
-					loader: "css-loader"
+					test: /\.s[ac]ss$/i,
+					exclude: /(node_modules)/,
+					use: [
+						require.resolve("style-loader"), // 스타일을 불러와서 페이지에서 활성화
+						{
+							loader: require.resolve("css-loader"), // import와 url(...) 구문을 require 기능을 통하여 처리
+							options: {
+								importLoaders: 1,
+								//modules: true, // css module 활성화
+								localIdentName: "[path][name]__[local]--[hash:base64:5]" // css module 활성화
+							},
+						},
+						{
+							loader: require.resolve("postcss-loader"),
+							options: {
+								ident: "postcss",
+								plugins: () => [
+									require("postcss-flexbugs-fixes"),
+									// 인터넷 환경에 따라 자동으로 -webkit이나 -ms 같은 접두어를 붙여줌
+									autoprefixer({
+										overrideBrowserslist:[
+											">0.2%",
+											"last 4 version",
+											"Firefox ESR",
+											"not ie < 9",
+										],
+										flexbox: "no-2009"
+									}),
+								],
+							},
+						},
+						{
+							loader: require.resolve("sass-loader"),
+							options: {
+								
+								sassOptions: {
+									includePaths: [
+										path.join(__dirname, "src", "main", "webapp", "resources", "scss"),
+									],
+								},
+								
+							},
+						},
+					],
 				},
+
+				// 이미지와 폰트를 다루는데 file-loader와 url-loader를 많이 사용
+				// file-loader : 파일 그대로 로딩한다.
+				// scss, css에서 url함수에 파일을 지정하게 되는데
+				// 발견하게 되면 실제 사용되는 파일만 복사한다.
+				// options가 없이 test와 loader만 설정하게 되면 output경로에 복사되게 되므로 경로를 지정.
+
+				// url-loader : 작은 이미지나 글꼴은 파일을 복사하지 않고 문자열 형태로 변환하여 bundle파일에 넣음
 				{
 					test: /\.(woff2?|ttf|eot|svg|png|jpe?g|gif)$/,
-					loader: "file"
+					loader: "file-loader",
+					options: {
+						publicPath: "./resources/build/",
+					},
 				},
 				{
 					test: /\.js$/,
@@ -110,7 +177,8 @@ if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 			path: path.join(__dirname, "src", "main", "webapp", "resources", "build"),
 			filename: "bundle.js",
 			publicPath: "/resources/"
-		}
+		},
+
 	}
 	
 }

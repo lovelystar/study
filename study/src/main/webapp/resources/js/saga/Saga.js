@@ -41,13 +41,15 @@ export function* logoutWatch() {
 	
 }
 
+export function* regContentsWatch() {
+	yield takeLatest(createActionReducer.regContents, regContentsAction);
+}
+
 // study ( client ) _ 현재 프로젝트 서버 호출
 function* studyAction(requestData, dispatch) {
-	
+
 	try{
-		
-		// call로 호출하면 .data로 내려받은 데이터 확인
-		// put = payload로 데이터 확인
+
 		const response = yield call([axiosStudy, axiosStudy.post], "/client/cookie/token", requestData.payload);
 		const cookieToken = yield put(createActionReducer.clinetServerReceived(response.data));
 		
@@ -83,34 +85,63 @@ function* resourceAction(requestData) {
 }
 
 // 로그아웃
-function* logoutAction(requestData, dispatch) {
+function* logoutAction(objData) {
 	
-//	try{
-//		
-//		const logoutData = yield call([axiosStudy, axiosStudy.post], "/client/logout", requestData.payload);
-//		yield put(createActionReducer.logoutSucceed());
-//		
-//		window.location.reload();
-//		
-//	} catch(error) {
-//		
-//		yield put(createActionReducer.appError(error));
-//		
-//	}
+	try{
+		
+		const logoutData = yield call([axiosStudy, axiosStudy.post], "/client/logout", objData.payload);
+		yield call([axiosAuth, axiosAuth.get], "/logout");
+		
+		yield put(createActionReducer.logoutSucceed());
+		
+		window.location.reload();
+		
+	} catch(error) {
+		
+		yield put(createActionReducer.appError(error));
+		
+	}
 	
 }
 
-// 로그아웃 성공 redirect
-//function* logoutSuccess() {
-//	
-//	try {
-//		
-//		const logoutData = yield call([axiosStudy, axiosStudy.get], "/client/");
-//		
-//	} catch(error) {
-//		
-//		yield put(createActionReducer.appError(error));
-//		
-//	}
-//	
-//}
+
+
+// 콘텐츠 업로드
+function* regContentsAction(contentsArray) {
+	
+	try{
+		/*
+		const testForm = new FormData();
+		const fileParam = contentsArray.payload;
+		
+		// 동적 FormData일 때
+		const formDataArr = new Array;
+
+		console.log("fileParam = " + fileParam);
+		console.log("fileParam length = " + fileParam.length);
+		*/
+
+		const testForm = new FormData();
+		contentsArray.payload.map((params, i) => {
+
+			testForm.append("randomName[]", JSON.stringify(params.randomName));
+			testForm.append("files", JSON.stringify(params.file));
+
+		});
+		
+		//const formDataResult = yield call([axiosStudy, axiosStudy.post], "/regcontents", testForm);
+
+		let testFormData = new FormData();
+		testFormData.append("fileName", "value1");
+		testFormData.append("fileUnit", "value2");
+		testFormData.append("randomName", "value3");
+
+		const fdResult = yield call([axiosStudy, axiosStudy.post], "/formdata", testFormData);
+
+
+	} catch(error) {
+		
+		yield put(createActionReducer.appError(error));
+		
+	}
+}
