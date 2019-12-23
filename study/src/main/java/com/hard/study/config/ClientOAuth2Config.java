@@ -3,8 +3,7 @@ package com.hard.study.config;
 import java.util.Arrays;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,8 +35,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @ComponentScan("com.hard.study")
 @PropertySource("classpath:application.properties")
 public class ClientOAuth2Config {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ClientOAuth2Config.class);
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;

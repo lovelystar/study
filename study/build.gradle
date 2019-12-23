@@ -46,10 +46,10 @@ dependencies {
 	implementation 'javax.annotation:javax.annotation-api'
 	implementation 'mysql:mysql-connector-java:8.0.16'
 	
-	implementation 'com.googlecode.log4jdbc:log4jdbc:1.2'
+	// aws s3 연동
+	implementation 'com.amazonaws:aws-java-sdk:1.11.698'
 	
-	implementation 'org.springframework.integration:spring-integration-websocket:5.2.0.RELEASE'
-	implementation 'org.springframework.integration:spring-integration-stomp:5.2.0.RELEASE'
+	implementation 'com.googlecode.log4jdbc:log4jdbc:1.2'
 	
 	// @EnableIntegration
 	implementation 'org.springframework.integration:spring-integration-event:5.2.0.RELEASE'
@@ -57,10 +57,22 @@ dependencies {
 	// @EnableIntegration 사용하기위해 위의 한줄만 추가하면 com.faster..... 에러
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
 	
+	// retrofit 사용을 위해서
 	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 	implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
 	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+	
+	// webSocket 구현 ( sockjs, stomp 사용 )
+	implementation 'org.springframework.integration:spring-integration-websocket:5.2.0.RELEASE'
+	implementation 'org.springframework.integration:spring-integration-stomp:5.2.0.RELEASE'
+	
+	implementation 'org.webjars:webjars-locator-core'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:bootstrap:4.3.1'
+	implementation 'org.webjars:jquery:3.4.1'
+	
 	
 	compileOnly 'org.projectlombok:lombok'
 	//runtimeOnly 'mysql:mysql-connector-java'

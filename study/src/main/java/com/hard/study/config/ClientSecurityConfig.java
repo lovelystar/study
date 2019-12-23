@@ -80,7 +80,7 @@ public class ClientSecurityConfig extends WebSecurityConfigurerAdapter {
 				// 이걸로 하면 안되는 이유가 뭐지;;;
 //				.anyRequest()
 //					.permitAll();
-				.antMatchers("/study/client/**")
+				.antMatchers("/study/client/**", "/study/**")
 					.permitAll();
 		
 //		http

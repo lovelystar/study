@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 public class ClientWebMVCConfig implements WebMvcConfigurer {
 	
+	private static final String localUploadPath = "C:\\localUploaded\\";
+	private static final String serverUploadPath = "/home/centos/serverUploaded/";
+
 	@Bean
 	public ViewResolver getViewResolver() {
 		
@@ -74,6 +78,25 @@ public class ClientWebMVCConfig implements WebMvcConfigurer {
 		
 		SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
 		return sessionLocaleResolver;
+		
+	}
+	
+	// 파일업로드 용량 Maximum
+	@Bean
+	public CommonsMultipartResolver commonsMultipartResolver() {
+		
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(2147483647);
+		
+		return multipartResolver;
+		
+	}
+
+	@Bean
+	public String fileUploadPath() {
+		
+		// return serverUploadPath;
+		return localUploadPath;
 		
 	}
 	

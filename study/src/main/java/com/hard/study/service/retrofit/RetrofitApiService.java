@@ -8,6 +8,7 @@ import com.hard.study.vo.oauth.UserInfoVo;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -28,5 +29,8 @@ public interface RetrofitApiService {
 	// 로그아웃은 ".../logout"으로 요청되고 기본적으로 POST
 	@POST("studyoauthserver/logout")
 	Call<Void> oauthServerLogout(@Header("Authorization") String authHeader) throws Exception;
+	
+	@GET("studyresourceserver/resourcejson/{param}")
+	Call<Map<String, Object>> resourceJSON(Integer param, String token) throws Exception;
 	
 }

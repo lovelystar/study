@@ -21,4 +21,13 @@ const axiosResource = axios.create({
 	transformRequest: [(response) => JSON.stringify(response)]
 });
 
-export { axiosStudy, axiosAuth, axiosResource };
+const axiosFormData = axios.create({
+	baseURL: REACT_APP_WEBPACK_CLIENT_HOST,
+	timeout: 180000,
+	transformRequest: [(response) => (response)],
+	headers: {
+		"Content-Type": false
+	}
+});
+
+export { axiosStudy, axiosAuth, axiosResource, axiosFormData };

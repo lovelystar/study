@@ -14,5 +14,17 @@ public class ContentsInfoDto {
 	Integer fileSize;
 	String fileUnit;
 	String randomName;
+
+	String first;
+	Integer second;
+	Integer third;
+	String fourth;
+	Integer fifth;
+
+	String name;
+	Integer age;
+	Integer career;
+	String number;
+	String email;
 	
 }

@@ -21,7 +21,7 @@
 import "regenerator-runtime/runtime";
 import { delay, call, put, all, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 import * as createActionReducer from "../reducers/CreateActionReducer";
-import { axiosStudy, axiosAuth, axiosResource } from "../api/AxiosApi";
+import { axiosStudy, axiosAuth, axiosResource, axiosFormData } from "../api/AxiosApi";
 
 export function* studyWatch() {
 	yield takeLatest(createActionReducer.clientServerRequest, studyAction);
@@ -122,22 +122,15 @@ function* regContentsAction(contentsArray) {
 		*/
 
 		const testForm = new FormData();
+		
 		contentsArray.payload.map((params, i) => {
 
-			testForm.append("randomName[]", JSON.stringify(params.randomName));
-			testForm.append("files", JSON.stringify(params.file));
+			testForm.append("randomNames", params.randomName);
+			testForm.append("files", params.file);
 
 		});
 		
-		//const formDataResult = yield call([axiosStudy, axiosStudy.post], "/regcontents", testForm);
-
-		let testFormData = new FormData();
-		testFormData.append("fileName", "value1");
-		testFormData.append("fileUnit", "value2");
-		testFormData.append("randomName", "value3");
-
-		const fdResult = yield call([axiosStudy, axiosStudy.post], "/formdata", testFormData);
-
+		const fdResult = yield call([axiosFormData, axiosFormData.post], "/regcontents", testForm);
 
 	} catch(error) {
 		
