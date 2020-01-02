@@ -116,6 +116,8 @@ class Style extends Component {
 					<div className={scsscn('box seven')}></div>
 				</div>
 
+				<div className={scsscn('animation')}></div>
+
 				<div className={headerStyle('reactButton')} onClick={this.centerBtn}>버튼</div>
 				<StyledButton big test="헬로"></StyledButton>
 				<div onDragEnter={this.dragEnter} onDragOver={this.dragOver} onDrop={this.fileDrop}>

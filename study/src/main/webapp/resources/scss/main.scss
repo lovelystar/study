@@ -1,3 +1,9 @@
+html {
+    width: 100%;
+    height: 100%;
+    font-size: 1em;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -92,6 +98,67 @@ $location: 50%;
 
     }
 
+}
+
+
+@keyframes square-to-circle {
+    
+    0% {
+        border-radius: 0;
+        background: coral;
+        transform: rotate(0deg);
+    }
+
+    25% {
+        border-radius: 50% 0 0 0;
+        background: darksalmon;
+        transform: rotate(45deg);
+    }
+
+    50% {
+        border-radius: 50% 50% 0 0;
+        background: indianred;
+        transform: rotate(90deg);
+    }
+
+    75% {
+        border-radius: 50% 50% 50% 0;
+        background: lightcoral;
+        transform: rotate(135deg);
+    }
+
+    100% {
+        border-radius: 50%;
+        background: darksalmon;
+        transform: rotate(180deg);
+    }
+
+}
+
+
+.animation {
+    width: 300px;
+    height: 300px;
+    background: coral;
+    outline: 1px solid transparent; // 파이어폭스에서 랜더링 부드럽게 해줌
+    // animation 태그설명
+    /*
+    animation-name: @keyframes의 명
+    animation-duration: 타임프레임의 길이 >> 애니메이션 시작~마지막 총 지속시간
+    animation-timing_function: 애니메이션 속도조절 ( linear, ease, ease-in, ease-out, ease-in-out, cubic-bezier )
+    animation-delay: 애니메이션이 시작하기 전 지연시간
+    animation-iteration-count: 반복 횟수
+    animation-direction: 루프 방향 ( 정방향, 역방향, 번갈아 반복 )
+    animation-fill-mode: 애니메이션 시작/끝 상태 제어 ( none, forwards, backwards, both )
+    */
+    
+    // 아래 애니메이션을 풀어 해석하자면
+    // square-to-circle이란 keyframes 참조
+    // 애니메이션 길이는 2s
+    // 시작전 딜레이는 1s
+    // 반복은 무한
+    // 루프방향은 alternate >> 시작 ~ 끝 후에 끝 ~ 시작 반복
+    animation: square-to-circle 2s .5s infinite cubic-bezier(1,.015,.295,1.225) alternate;
 }
 
 .uploadHeader {

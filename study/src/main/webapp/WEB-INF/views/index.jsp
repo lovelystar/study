@@ -24,11 +24,7 @@
 		
 		<link rel="shortcut icon" href="/study/resources/img/favicon.ico" >
 
-		<title>Client</title>
-
-<%-- 		<link href="<c:url value='/resources/css/gallery.css' />" rel="stylesheet" /> --%>
-		
-<%-- 		<script src="<c:url value='/resources/js/jquery-3.2.1.min.js' />"></script> --%>
+		<title>React</title>
 		
 	</head>
 	<body class="body-home">

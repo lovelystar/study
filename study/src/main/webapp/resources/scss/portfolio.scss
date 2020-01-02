@@ -1,0 +1,539 @@
+@import "main"; // webpack의 sass-loader부분 중 includePaths에 경로추가 해서 ../../ 생략하도록 변경
+@import "break";
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/*
+pc: 1200px,
+note: 1024px,
+tablet: 768px,
+mobile: 480px,
+minimum: 320px,
+*/
+
+@keyframes scroll {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(46px);
+    }
+}
+
+.port_main {
+    
+    z-index: 10;
+    position: relative;
+    margin-top: 56px;
+    color: #666666;
+    font-family: 'Noto Sans KR' !important;
+
+    section {
+
+        padding-bottom: 50px;
+
+        .port_inner_container {
+            margin: 0 auto;
+            padding: 0 40px;
+            max-width: 1280px;
+
+            .port_title {
+
+                text-align: center;
+    
+                h2 {
+                    position: relative;
+                    padding: 50px 0;
+                    font-weight: bold;
+                    font-size: 1.875em;
+                    color: #ff0073;
+                    margin: 0;
+    
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        top: 95px;
+                        left: 50%;
+                        width: 30px;
+                        height: 2px;
+                        background-color: #ff0073;
+                        transform: translate(-50%, -50%);
+                    }
+    
+                }
+                
+                .text_animated_container {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    text-align: center;
+                    white-space: nowrap;
+                    transform: translate(-50%, -50%);
+
+                    div {
+                        display: inline-block;
+                        height: 120px;
+
+                        .text_animated {
+                            display: inline-block;
+                            text-align: left;
+        
+                            .text_animated_wrap {
+                                border-right: 0.05em solid #666666;
+                            }
+                        
+                        }
+
+                        span {
+                            color: #ff0073;
+                            font-size: 2.2em;
+                            font-weight: bold;
+
+                            @include media("<note") {
+                                font-size: 2em;
+                            }
+                        
+                            @include media("<tablet") {
+                                font-size: 1.8em;
+                            }
+                        
+                            @include media("<mobile") {
+                                font-size: 1.4em;
+                            }
+
+                        }
+                        
+                        @include media("<tablet") {
+                            height: 80px;
+                        }
+                    
+                        @include media("<mobile") {
+                            height: 50px;
+                        }
+
+                    }
+
+                    p {
+                        font-size: 3em;
+                        font-weight: bold;
+                        
+                        @include media("<tablet") {
+                            font-size: 2em;
+                        }
+                    
+                        @include media("<mobile") {
+                            font-size: 1.5em;
+                        }
+
+                    }
+                }
+
+                .scrolling_btn {
+                    position: absolute;
+                    left: 50%;
+                    bottom: 3%;
+                    width: 40px;
+                    height: 70px;
+                    border: 1px solid #ff0073;
+                    border-radius: 20px;
+                    transform: translate(-50%, -50%);
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        margin-left: -4px;
+                        top: 8px;
+                        width: 8px;
+                        height: 8px;
+                        left: 50%;
+                        border-radius: 4px;
+                        background-color: #ff0073;
+                        animation-duration: 1.5s;
+                        animation-iteration-count: infinite;
+                        animation-name: scroll;
+                    }
+
+                }
+                
+            }
+    
+            .port_about {
+
+                font-size: 0.9em;
+
+                &::after {
+                    content: "";
+                    display: block;
+                    clear: both;
+                }
+                
+                h3 {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                        @include media("<tablet") {
+                            text-align: center;
+                        }
+                }
+
+                .about_left {
+                    float: left;
+                    width: 60%;
+                    text-align: left;
+                    
+                    .port_profile {
+
+                        img {
+                            float: left;
+                            width: 25%;
+                            @include media("<tablet") {
+                                float: none;
+                            }
+                        }
+
+                        .profile_personal {
+                            float: left;
+                            padding-left: 5%;
+                            width: 75%;
+
+                            li {
+
+                                &:nth-child(1) {
+                                    font-size: 1.25em;
+                                    color: #222222;
+                                }
+
+                                &:nth-child(2) {
+                                    padding-bottom: 20px;
+                                }
+                                color: #666666;
+                            }
+
+                            
+                            @include media("<tablet") {
+                                float: none;
+                                padding-top: 30px;
+                                padding-left: 0%;
+                                width: 100%;
+                            }
+
+                        }
+
+                        &::after {
+                            content: "";
+                            display: block;
+                            clear: both;
+                        }
+
+                        @include media("<tablet") {
+                            text-align: center;
+                        }
+
+                    }
+
+                    .port_record {
+                        padding-top: 70px;
+
+                        .record_personal {
+
+                            li {
+                                float: left;
+                                padding: 30px 60px 0 0;
+
+                                // nth-last-child = 뒤에서부터 셈
+                                // last-child 마지막 요소
+                                &:last-child {
+                                    padding-right: 0;
+                                }
+
+                                p {
+                                    padding: 0;
+                                    margin: 0;
+                                    color: #222222;
+                                    font-weight: normal;
+
+                                    &:last-child {
+                                        padding-top: 20px;
+                                        font-weight: bold;
+                                    }
+                                    
+                                }
+
+                                @include media("<tablet") {
+                                    float: none;
+                                    padding: 30px 0 0 0;
+                                }
+
+                            }
+
+                        }
+
+                        &::after {
+                            content: "";
+                            display: block;
+                            clear: both;
+                        }
+
+                        
+                        @include media("<tablet") {
+                            display: inline-block;
+                            width: 100%;
+                            text-align: center;
+                        }
+
+                    }
+
+                    .skill_bar {
+                        padding-top: 50px;
+                        width: 70%;
+
+                        li {
+                            padding-top: 20px;
+
+                            .skill_bar_wrap {
+                                position: relative;
+
+                                .empty_skill_bar {
+                                    margin-top: 10px;
+                                    width: 100%;
+                                    height: 5px;
+                                    background-color: #dfdfdf;
+                                }
+
+                                .filled_skill_bar {
+                                    transition: 2s;
+                                    width: 0%;
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    height: 5px;
+                                    background-color: #ff0073;
+
+                                    &.skill_html {
+                                        width: 90%;
+                                    }
+
+                                    &.skill_ajax {
+                                        width: 95%;
+                                    }
+
+                                    &.skill_javascript {
+                                        width: 80%;
+                                    }
+
+                                    &.skill_jquery {
+                                        width: 85%;
+                                    }
+
+                                    &.skill_css {
+                                        width: 70%;
+                                    }
+                                    
+                                }
+
+                            }
+                        }
+                        
+                    }
+
+                    @include media("<tablet") {
+                        float: none;
+                        padding-top: 70px;
+                        width: 100%;
+                    }
+
+                }
+    
+                .about_right {
+                    float: right;
+                    width: 40%;
+                    text-align: left;
+
+                    .port_skill {
+                        text-align: left;
+
+                        li {
+                            padding-bottom: 10px;
+                        }
+
+                            
+                        @include media("<tablet") {
+                            text-align: center;
+                        }
+
+
+                    }
+
+                    @include media("<tablet") {
+                        float: none;
+                        padding-top: 70px;
+                        width: 100%;
+                    }
+
+                }
+    
+            }
+
+            .port_info {
+
+                padding-bottom: 150px;
+
+                img {
+                    float: right;
+                    width: 50%;
+
+                    @include media("<tablet") {
+                        float: none;
+                        width: 100%;
+                    }
+                }
+
+                .port_info_detail {
+                    float: left;
+                    width: 40%;
+                    padding-right: 10%;
+                    text-align: left;
+
+                    span {
+                        color: #ff0073;
+                    }
+
+                    h3 {
+
+                        position: relative;
+                        font-size: 1.6em;
+                        padding: 15px 0 60px;
+
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            bottom: 30px;
+                            left: 0;
+                            width: 30px;
+                            height: 1px;
+                            background: #666666;
+                        }
+
+                    }
+
+                    p {
+                        padding-bottom: 30px;
+                        color: #666666;
+                    }
+
+                    ul {
+                        
+                        padding-bottom: 65px;
+
+                        li {
+                            padding-bottom: 10px;
+                        }
+                        @include media("<tablet") {
+                            padding-bottom: 40px;
+                        }
+                    }
+
+                    button {
+                        display: inline-block;
+                        width: 100%;
+                        padding: 15px 0;
+                        background: #ffffff;
+                        border: 1px solid #ff0073;
+                        color: #ff0073;
+                        text-align: center;
+                    }
+
+                    @include media("<tablet") {
+                        float: none;
+                        padding-right: 0%;
+                        width: 100%;
+                    }
+
+                }
+
+                &:last-child {
+                    padding-bottom: 0;
+                }
+
+                &::after {
+                    content: "";
+                    display: block;
+                    clear: both;
+                }
+
+                @include media("<tablet") {
+                    padding-bottom: 40px;
+                }
+
+            }
+
+            @include media("<mobile") {
+                padding: 0 20px;
+            }
+            
+        }
+
+        &:nth-child(1){
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0)
+            ), url("../img/bg_temp.jpg") 50% 50% no-repeat;
+            background-attachment: scroll;
+            background-size: contain;
+        }
+
+    }
+
+    @include media("<pc") {
+        font-size: 1em;
+    }
+
+    @include media("<note") {
+        font-size: 0.9em;
+    }
+
+    @include media("<tablet") {
+        font-size: 0.8em;
+    }
+
+    @include media("<mobile") {
+        font-size: 0.9em;
+    }
+
+    @include media("<minimum") {
+        font-size: 0.6em;
+    }
+
+}
+
+.to_top_btn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 30;
+    background: #ff0073;
+    transition: .3s;
+    cursor: pointer;
+
+    a {
+        display: block;
+        text-indent: -9999px;
+        text-decoration: none;
+        width: 55px;
+        height: 55px;
+        background: url("../img/to-top.png");
+    }
+
+    &.active {
+        display: block;
+        opacity: 1;
+    }
+
+}

@@ -25,6 +25,7 @@ import Swiper from "../components/Swiper";
 import Style from "../components/Style";
 import Upload from "../components/Upload";
 import Data from "../components/Data";
+import Portfolio from "../components/Portfolio";
 
 class Router extends Component {
 	
@@ -47,6 +48,7 @@ class Router extends Component {
 						<Route path="/study/style" exact component={Style} />
 						<Route path="/study/upload" exact component={Upload} />
 						<Route path="/study/data" exact component={Data} />
+						<Route path="/study/portfolio" exact component={Portfolio} />
 					</Switch>
 				</BRouter>
 		);

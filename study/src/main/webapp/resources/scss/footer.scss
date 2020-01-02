@@ -1,0 +1,39 @@
+@import "main"; // webpack의 sass-loader부분 중 includePaths에 경로추가 해서 ../../ 생략하도록 변경
+@import "break";
+
+/*
+pc: 1200px,
+note: 1024px,
+tablet: 768px,
+mobile: 480px,
+minimum: 320px,
+*/
+
+#footer {
+    margin: 0;
+    padding: 50px 0;
+    text-align: center;
+    background-color: #ffe1d9;
+    z-index: 5;
+    font-family: 'Noto Sans KR', sans-serif;
+
+    .inner_footer {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 40px;
+
+        @include media("<mobile") {
+            font-size: 0.9em;
+            padding: 0 20px;
+        }
+        
+        p {
+            margin: 0;
+            padding: 0;
+            font-weight: bold;
+        }
+
+    }
+
+    
+}

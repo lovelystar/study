@@ -185,4 +185,14 @@ public class ComponentController {
 
 	}
 
+	@RequestMapping(value="/portfolio", method=RequestMethod.GET)
+	public ModelAndView portfolio() throws Exception {
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("index");
+
+		return mav;
+
+	}
+
 }

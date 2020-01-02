@@ -1,6 +1,14 @@
 @import "main"; // webpack의 sass-loader부분 중 includePaths에 경로추가 해서 ../../ 생략하도록 변경
 @import "break";
 
+/*
+pc: 1200px,
+note: 1024px,
+tablet: 768px,
+mobile: 480px,
+minimum: 320px,
+*/
+
 .reactButton {
     background: #59bce0;
     transition: all 0.2s ease-in;
@@ -39,6 +47,160 @@
 
     &:active {
         background: blue;
+    }
+
+}
+
+#header {
+    margin: 0;
+    position: fixed;
+    top: 0;
+    z-index: 15;
+    width: 100%;
+    height: 56px;
+    background: #ffe1d9;
+
+    &.active {
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .inner_header {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 40px;
+
+        .header_category {
+            display: block;
+            float: right;
+
+            ul {
+
+                li {
+                    float: left;
+
+                    a {
+                        position: relative;
+                        padding: 10px;
+                        font-size: 1.25em;
+                        color: #222222;
+                        line-height: 56px;
+
+                        &:hover {
+                            text-decoration: none;
+                            color: #ff0073;
+                        }
+
+                    }
+                }
+            }
+
+            @include media("<tablet") {
+                display: none;
+            }
+
+        }
+
+        .m_header_menu {
+            display: none;
+            position: fixed;
+            top: 18px;
+            left: 30px;
+            z-index: 50;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            transition: opacity .2s ease;
+
+            &.clicked {
+                
+                i {
+                    
+                    &:nth-child(1) {
+                        transform: translateX(0) translateY(9px) rotate(45deg);
+                    }
+
+                    &:nth-child(2) {
+                        opacity: 0;
+                    }
+
+                    &:nth-child(3) {
+                        height: 2px;
+                        transform: translateX(0) translateY(-10px) rotate(-45deg);
+                    }
+
+                }
+
+            }
+
+            i {
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background: #ff0073;
+                transition: all .3s ease;
+
+                &:nth-child(1) {
+                    height: 2px;
+                }
+
+                &:nth-child(2) {
+                    top: 9px;
+                    height: 2px;
+                }
+
+                &:nth-child(3) {
+                    bottom: 0px;
+                }
+
+            }
+            
+            @include media("<tablet") {
+                display: block;
+            }
+
+        }
+
+    }
+
+    .logo {
+        float: left;
+
+        a {
+            color: #ff0073;
+            font-size: 0.75em;
+
+            &:hover {
+                text-decoration: none;
+            }
+
+        }
+        
+        @include media("<tablet") {
+            float: none;
+            text-align: center;
+        }
+
+    }
+
+    @include media("<pc") {
+        font-size: 1em;
+    }
+
+    @include media("<note") {
+        font-size: 0.9em;
+    }
+
+    @include media("<tablet") {
+        font-size: 0.8em;
+    }
+
+    @include media("<mobile") {
+        font-size: 0.9em;
+    }
+
+    @include media("<minimum") {
+        font-size: 0.6em;
     }
 
 }
