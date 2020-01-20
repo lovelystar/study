@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hard.study.dao.board">
+	
+	<!-- 글 등록 -->
+	<insert id="regBoard" parameterType="com.hard.study.vo.board.BoardVo" useGeneratedKeys="true" keyProperty="idxBoard" keyColumn="idx">
+		INSERT INTO board (
+			boardName,
+			boardDetails
+		) VALUES (
+			#{boardName},
+			#{boardDetails}
+		)
+	</insert>
+	
+	<!-- 글에 첨부된 파일 -->
+	<insert id="regFiles" parameterType="com.hard.study.vo.board.BoardVo">
+		INSERT INTO contents (
+			idxBoard,
+			fileName,
+			originalName,
+			randomName,
+			filePath,
+			<!-- fileBytes, -->
+			mimeType,
+			idxUser,
+			idxUserGroup
+		) VALUES (
+			#{idxBoard},
+			#{fileName},
+			#{originalName},
+			#{randomName},
+			#{filePath},
+			<!-- #{fileBytes}, -->
+			#{mimeType},
+			#{idxUser},
+			#{idxUserGroup}
+		);
+	</insert>
+	
+	<!-- 글 갯수 -->
+	<select id="boardTotal" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			board
+		WHERE
+			boardable = 1;
+	</select>
+	
+	<!-- 글 목록 -->
+	<select id="getBoard" resultType="com.hard.study.vo.board.BoardVo">
+		SELECT
+			idx AS idx,
+			boardName AS boardName,
+			boardDetails AS boardDetails,
+			boardViews AS boardViews,
+			uptdate AS uptdate
+		FROM
+			board
+		WHERE
+			boardable = 1
+		ORDER BY
+			idx
+		DESC
+		LIMIT
+			#{pageStart}, #{perPageNum};
+	</select>
+	
+	<!-- 글 목록 ( 파일리스트 ) -->
+	<select id="getBoardUpld" resultType="com.hard.study.vo.board.BoardVo">
+		SELECT
+			idx AS idx,
+			idxBoard AS idxBoard,
+			fileName AS fileName,
+			originalName AS originalName,
+			randomName AS randomName,
+			mimeType AS mimeType,
+			idxUser AS idxUser,
+			idxUserGroup AS idxUserGroup,
+			uptdate AS uptdate
+		FROM
+			contents
+		WHERE
+			idxBoard = #{idxBoard}
+		ORDER BY
+			idx;
+	</select>
+	
+</mapper>

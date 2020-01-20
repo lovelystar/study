@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class ClientWebMVCConfig implements WebMvcConfigurer {
 	
 	private static final String localUploadPath = "C:\\localUploaded\\";
-	private static final String serverUploadPath = "/home/centos/serverUploaded/";
+	// private static final String serverUploadPath = "/home/centos/serverUploaded/";
 
 	@Bean
 	public ViewResolver getViewResolver() {

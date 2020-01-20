@@ -28,6 +28,8 @@ class Portfolio extends Component {
 
     componentDidMount() {
         
+        let sectionHTotal = 0;
+        
         // 크로스 브라우징
         // client@@@ = 스크롤바의 공간을 제외한 부분
         let clientWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -63,6 +65,10 @@ class Portfolio extends Component {
         let sectionTag = document.getElementsByTagName("section");
         sectionTag[0].style.height = clientHeight - 56 + "px";
 
+        // 헤더 animate
+        let headerBreak = false;
+        let headerCategory = document.getElementsByClassName("headerLink");
+
         for(let i=0; i<textElements.length; i++){
 
             let basicText = textElements[i].getAttribute("text-data");
@@ -72,6 +78,26 @@ class Portfolio extends Component {
 
         }
 
+        for(let i=0; i<sectionTag.length; i++){
+
+            // 스크롤 위치
+            let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+            // 그냥 이일반 sectionTag[i].style.height로는 값을 불러오질 못함.
+            let sectionH = parseInt(window.getComputedStyle(sectionTag[i]).height.replace("px", "").trim());
+            sectionHTotal += sectionH
+
+            if(scrollPosition <= sectionHTotal && headerBreak == false){
+
+                headerBreak = true;
+                headerCategory[i].classList.add("active");
+
+            } else {
+                headerCategory[i].classList.remove("active");
+            }
+
+        }
+        
         window.scrollTo(0, 0);
 
     }
@@ -106,7 +132,7 @@ class Portfolio extends Component {
                 filledSkillBar[3].className += " skill_jquery";
                 filledSkillBar[4].className += " skill_css";
 
-                headerTag.className += "active";
+                headerTag.classList.add("active");
 
             }
 
@@ -123,7 +149,7 @@ class Portfolio extends Component {
                 filledSkillBar[3].className = filledSkillBar[3].className.replace(" skill_jquery", "");
                 filledSkillBar[4].className = filledSkillBar[4].className.replace(" skill_css", "");
 
-                headerTag.className = headerTag.className.replace("active", "");
+                headerTag.classList.remove("active");
 
             }
 
@@ -131,6 +157,35 @@ class Portfolio extends Component {
 
         firstSec.style.backgroundImage = 
         'linear-gradient(to bottom, rgba(255, 255, 255, ' + scrollValue + '), rgba(255, 255, 255, ' + scrollValue + ')), url(/study/resources/img/bg_temp.jpg)';
+        
+        
+        // 헤더 animate
+        let headerBreak = false;
+        let sectionTag = document.getElementsByTagName("section");
+        let headerCategory = document.getElementsByClassName("headerLink");
+        let sectionHTotal = 0;
+
+        for(let i=0; i<sectionTag.length; i++){
+
+            // 스크롤 위치
+            let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+            // 그냥 이일반 sectionTag[i].style.height로는 값을 불러오질 못함.
+            let sectionH = parseInt(window.getComputedStyle(sectionTag[i]).height.replace("px", "").trim() / 1.1);
+            sectionHTotal += sectionH
+
+            if(scrollPosition <= sectionHTotal && headerBreak == false){
+
+                headerBreak = true;
+                headerCategory[i].classList.add("active");
+
+            } else {
+                
+                headerCategory[i].classList.remove("active");
+
+            }
+
+        }
         
     }
     
@@ -410,60 +465,66 @@ class Portfolio extends Component {
                     </BasicSectionWrap>
                     <BasicSectionWrap>
                         <div className={portfolioStyle('port_inner_container')}>
+                            
                             <div className={portfolioStyle('port_title')}>
                                 <h2>Portfolio</h2>
                             </div>
+                            
                             <div className={portfolioStyle('port_info')}>
                                 <img src="/study/resources/img/bg_temp.jpg" />
                                 <div className={portfolioStyle('port_info_detail')}>
                                     <span>01</span>
-                                    <h3>페이지 기능 구현</h3>
-                                    <p>페이지 디테일 기능을 구현한 페이지입니다.</p>
+                                    <h3>OAuth</h3>
+                                    <p>사용자, 인증서버, 자원서버로 분할하여 인증 및 접근하는 페이지입니다.</p>
                                     <ul>
-                                        <li>2020. 01 ~ 2020. 02</li>
-                                        <li>파일업로드</li>
+                                        <li>2019.12 ~ 2020. 02</li>
                                         <li>Spring Security</li>
                                         <li>OAuth</li>
-                                        <li>Web Socket</li>
+                                        <li>Authentication Server</li>
+                                        <li>Resource Server</li>
                                         <li>기획 / 디자인 / 개발 참여도 100%</li>
                                     </ul>
-                                    <button>View</button>
+                                    <a href="/study/client/">View</a>
                                 </div>
                             </div>
+
                             <div className={portfolioStyle('port_info')}>
-                                <img src="/study/resources/img/bg_temp.jpg" />
-                                <div className={portfolioStyle('port_info_detail')}>
+                                <img style={{float: "left", }} src="/study/resources/img/bg_temp.jpg" />
+                                <div style={{float: "right", }} className={portfolioStyle('port_info_detail')}>
                                     <span>02</span>
-                                    <h3>페이지 기능 구현</h3>
-                                    <p>페이지 디테일 기능을 구현한 페이지입니다.</p>
+                                    <h3>게시판</h3>
+                                    <p>게시판 기능을 구현한 페이지입니다.</p>
                                     <ul>
                                         <li>2020. 01 ~ 2020. 02</li>
                                         <li>파일업로드</li>
                                         <li>Spring Security</li>
-                                        <li>OAuth</li>
-                                        <li>Web Socket</li>
+                                        <li>Swiper</li>
                                         <li>기획 / 디자인 / 개발 참여도 100%</li>
                                     </ul>
-                                    <button>View</button>
+                                    <a href="/study/board">View</a>
                                 </div>
                             </div>
+
                             <div className={portfolioStyle('port_info')}>
                                 <img src="/study/resources/img/bg_temp.jpg" />
                                 <div className={portfolioStyle('port_info_detail')}>
                                     <span>03</span>
-                                    <h3>페이지 기능 구현</h3>
-                                    <p>페이지 디테일 기능을 구현한 페이지입니다.</p>
+                                    <h3>Web Socket</h3>
+                                    <p>소켓을 이용한 채팅 기능을 구현한 페이지입니다.</p>
                                     <ul>
-                                        <li>2020. 01 ~ 2020. 02</li>
-                                        <li>파일업로드</li>
-                                        <li>Spring Security</li>
-                                        <li>OAuth</li>
+                                        <li>2019. 12 ~ 2020. 02</li>
                                         <li>Web Socket</li>
-                                        <li>기획 / 디자인 / 개발 참여도 100%</li>
+                                        <li>Client Server 자체</li>
+                                        <li>Web Socket Server 별도 구현</li>
+                                        <li>HTML5</li>
+                                        <li>Access Token</li>
+                                        <li>OAuth</li>
                                     </ul>
-                                    <button>View</button>
+                                    <a style={{width: "48%", marginRight: "4%"}} href="/study/clientws">Client</a>
+                                    <a style={{width: "48%", }} href="/study/resourcews">Resource</a>
                                 </div>
                             </div>
+
                         </div>
                     </BasicSectionWrap>
                     <BasicSectionWrap even>

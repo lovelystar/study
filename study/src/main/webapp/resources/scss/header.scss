@@ -58,7 +58,8 @@ minimum: 320px,
     z-index: 15;
     width: 100%;
     height: 56px;
-    background: #ffe1d9;
+    //background: #ffe1d9;
+    background: #ffffff;
 
     &.active {
         box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
@@ -80,10 +81,29 @@ minimum: 320px,
 
                     a {
                         position: relative;
-                        padding: 10px;
+                        padding: 10px 20px;
                         font-size: 1.25em;
-                        color: #222222;
+                        color: #666666;
                         line-height: 56px;
+                        cursor: pointer;
+
+                        &.active {
+                            &::after {
+                                transform: scaleX(1);
+                            }
+                        }
+
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            height: 3px;
+                            background: #ff0073;
+                            transition: 0.2s;
+                            transform: scaleX(0);
+                        }
 
                         &:hover {
                             text-decoration: none;

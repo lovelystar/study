@@ -442,6 +442,23 @@ minimum: 320px,
                         text-align: center;
                     }
 
+                    a {
+                        text-decoration: none;
+                        display: inline-block;
+                        width: 100%;
+                        padding: 15px 0;
+                        background: #ffffff;
+                        border: 1px solid #ff0073;
+                        color: #ff0073;
+                        text-align: center;
+
+                        &:hover {
+                            text-decoration: none;
+                            font-weight: bold;
+                        }
+
+                    }
+
                     @include media("<tablet") {
                         float: none;
                         padding-right: 0%;

@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
 import Header from "./Header";
-import { Default, Navigation, DynamicPagination, ProgressPagination, FractionPagination, Scroll } from "../libraries/Swiper";
+import { Default, Navigation, DynamicPagination, ProgressPagination, FractionPagination, Scroll, BoardContents } from "../libraries/Swiper";
+
+import 'swiper/css/swiper.css';
 
 class Swiper extends Component {
 	
@@ -11,7 +13,6 @@ class Swiper extends Component {
 		super(props);
 		this.state = {
 		}
-		
 
 	}
 	
@@ -22,26 +23,29 @@ class Swiper extends Component {
 			<div>
 
 				<Header />
-				<span>Swiper 테스트</span>
+				<div style={{position: "relative"}}>
+					<span>Swiper 테스트</span>
 
-				<p>Default Swiper</p>
-				<Default></Default>
+					<p>Default Swiper</p>
+					<Default></Default>
 
-				<p>Arrow( Navigation ) Swiper</p>
-				<Navigation></Navigation>
+					<p>Arrow( Navigation ) Swiper</p>
+					<Navigation></Navigation>
 
-				<p>DynamicPagination Swiper</p>
-				<DynamicPagination></DynamicPagination>
+					<p>DynamicPagination Swiper</p>
+					<DynamicPagination></DynamicPagination>
 
-				<p>ProgressPagination Swiper</p>
-				<ProgressPagination></ProgressPagination>
+					<p>ProgressPagination Swiper</p>
+					<ProgressPagination></ProgressPagination>
 
-				<p>FractionPagination Swiper</p>
-				<FractionPagination></FractionPagination>
+					<p>FractionPagination Swiper</p>
+					<FractionPagination></FractionPagination>
 
-				<p>Scroll Swiper</p>
-				<Scroll></Scroll>
+					<p>Scroll Swiper</p>
+					<Scroll></Scroll>
 
+					<BoardContents></BoardContents>
+				</div>
 			</div>
 			
 		);

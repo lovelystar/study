@@ -5,27 +5,27 @@ const Default = () => {
     
     return (
         <Swiper>
-            <div style={{background: "red", height: "100px", }}>
-                <span>DEFAULT SWIPER #1</span>
-            </div>
-            <div style={{background: "orange", height: "100px", }}>
-                <span>DEFAULT SWIPER #2</span>
-            </div>
-            <div style={{background: "yellow", height: "100px", }}>
-                <span>DEFAULT SWIPER #3</span>
-            </div>
-            <div style={{background: "green", color: "white", height: "100px", }}>
-                <span>DEFAULT SWIPER #4</span>
-            </div>
-            <div style={{background: "blue", color: "white", height: "100px", }}>
-                <span>DEFAULT SWIPER #5</span>
-            </div>
-            <div style={{background: "indigo", color: "white", height: "100px", }}>
-                <span>DEFAULT SWIPER #6</span>
-            </div>
-            <div style={{background: "purple", color: "white", height: "100px", }}>
-                <span>DEFAULT SWIPER #7</span>
-            </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=t1s6cx7pnksjiubvta795a.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=ek2evdl8d69tgwgsq3elsq.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=yee9v7oy8vlu3lm5jv9qi.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=y0gtyncpysaydjgo7hsv0r.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=zzu7k6eh6t8613qkmiyo8s.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=kg22tv8ju9qpbxyfwcm7vc.jpg" />
+        </div>
+        <div style={{width: "150px", height: "150px"}}>
+            <img style={{width: "150px", height: "150px"}} src="/study/thumbs?pfn=1r7pu1grwn4k5yn03htda.jpg" />
+        </div>
         </Swiper>
     )
 
@@ -234,6 +234,59 @@ const Scroll = () => {
 
 }
 
+
+
+
+
+
+
+
+
+
+/* Board 전용 */
+const BoardContents = () => {
+
+    const booardParam = {
+        effect: 'cube',
+        grabCursor: true,
+        cubeEffect: {
+            shadow: true,
+            slideShadows: true,
+            shadowOffset: 20,
+            shadowScale: 0.94,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+        }
+    }
+
+    return (
+        <Swiper {...booardParam}>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=t1s6cx7pnksjiubvta795a.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=ek2evdl8d69tgwgsq3elsq.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=yee9v7oy8vlu3lm5jv9qi.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=y0gtyncpysaydjgo7hsv0r.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=zzu7k6eh6t8613qkmiyo8s.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=kg22tv8ju9qpbxyfwcm7vc.jpg" />
+            </div>
+            <div style={{width: "150px", height: "150px"}}>
+                <img src="/study/thumbs?pfn=1r7pu1grwn4k5yn03htda.jpg" />
+            </div>
+        </Swiper>
+    )
+}
+
 export { 
     Default, 
     Navigation, 
@@ -241,4 +294,5 @@ export {
     ProgressPagination,
     FractionPagination,
     Scroll,
+    BoardContents,
 };

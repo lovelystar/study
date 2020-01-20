@@ -16,6 +16,8 @@ var nodeModules = path.join(__dirname, "node_modules");
 // 적정사이즈의 bundle을 생성하고 관리
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
+const MiniCssExtractPlugin= require("mini-css-extract-plugin");
+
 // src폴더, node_modules폴더가 있는지 판단
 if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 	
@@ -44,6 +46,9 @@ if(fileSys.existsSync(reduxSaga) && fileSys.existsSync(nodeModules)){
 				"REACT_APP_WEBPACK_CLIENT_HOST" : JSON.stringify("http://localhost:8081/study"),
 				"REACT_APP_WEBPACK_AUTH_HOST" : JSON.stringify("http://localhost:8082/studyoauthserver"),
 				"REACT_APP_WEBPACK_RESOURCE_HOST" : JSON.stringify("http://localhost:8083/studyresourceserver")
+			}),
+			new MiniCssExtractPlugin({
+				filename: 'study.css'
 			})
 		],
 		module:{

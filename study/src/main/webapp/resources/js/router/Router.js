@@ -23,9 +23,12 @@ import { BrowserRouter as BRouter, Route, Switch } from "react-router-dom";
 import Home from "../components/Home";
 import Swiper from "../components/Swiper";
 import Style from "../components/Style";
-import Upload from "../components/Upload";
+import Board from "../components/Board";
 import Data from "../components/Data";
 import Portfolio from "../components/Portfolio";
+import Boardview from "../components/Boardview";
+import Socketroom from "../components/Socketroom";
+import Sockettoken from "../components/Sockettoken";
 
 class Router extends Component {
 	
@@ -46,9 +49,12 @@ class Router extends Component {
 						<Route path="/study/client" exact component={Home} />
 						<Route path="/study/swiper" exact component={Swiper} />
 						<Route path="/study/style" exact component={Style} />
-						<Route path="/study/upload" exact component={Upload} />
+						<Route path="/study/board" exact component={Board} />
 						<Route path="/study/data" exact component={Data} />
 						<Route path="/study/portfolio" exact component={Portfolio} />
+						<Route path="/study/boardview" exact component={Boardview} />
+						<Route path="/study/roomsocket" exact component={Socketroom} />
+						<Route path="/study/tokensocket" exact component={Sockettoken} />
 					</Switch>
 				</BRouter>
 		);

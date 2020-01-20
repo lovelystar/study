@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
 import Header from "./Header";
-import UploadForm from "./Upload";
+import UploadForm from "./Board";
 
 // 방법1. css를 가져와서 적용
 import style from "../../css/main.css";

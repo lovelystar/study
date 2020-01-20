@@ -6,7 +6,6 @@ const initState = {
 	loading: false,
 	message: null,
 	error: null,
-	contentsArray: null,
 };
 
 // createAction의 두 번째 인자는 payloadCreator로써 payload를 어떻게 정할 지 설정
@@ -22,9 +21,6 @@ export const logout = createAction("LOGOUT", (logoutData) => (logoutData)); // �
 export const logoutSucceed = createAction("LOGOUT_SUCCEED"); // 로그아웃 실패
 export const apiFailure = createAction("API_FAILURE"); // api 요청 실패
 export const appError = createAction("APP_ERROR"); // 에러
-
-export const regContents = createAction("REG_CONTENTS", (contentsArray) => (contentsArray)); // 콘텐츠 업로드
-export const regContentsSucceed = createAction("REG_CONTENTS_SUCCEED"); // 콘텐츠 업로드 성공
 
 export const createActionReducer = handleActions({
 	
@@ -42,6 +38,7 @@ export const createActionReducer = handleActions({
 		return {...state, loading: true, requestData: action.payload, message: null, error: null};
 	},
 	[receivedResourceSucceed]: (state, action) => {
+		console.log("reducer action.payload.data = " + action.payload.data);
 		return {...state, loading: false, payload: action.payload.data, message: null, error: null};
 	},
 	
@@ -58,15 +55,6 @@ export const createActionReducer = handleActions({
 		return {...state, loading: false, requestData: action.payload.requestData, message: null, error: action.payload.error};
 	},
 
-
-	[regContents]: (state, action) => {
-		return {...state, loading: false, contentsArray: action.payload, message:null, error: null};
-	},
-	[regContentsSucceed]: (state, action) => {
-		return {...state, loading: false, message: null, error: null};
-	},
-
-	
 }, initState);
 
 export default createActionReducer;

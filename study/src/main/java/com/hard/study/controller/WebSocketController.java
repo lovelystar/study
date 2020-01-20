@@ -37,6 +37,27 @@ public class WebSocketController {
 		
 	}
 	
+	@RequestMapping(value="/roomsocket", method=RequestMethod.GET)
+	public ModelAndView roomWebSocket() throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("index");
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping(value="/tokensocket", method=RequestMethod.GET)
+	public ModelAndView tokenWebSocket() throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("index");
+		
+		return mav;
+		
+	}
+	
+	
 	// @RequestMapping("/chat/{room}/{name}")
 	// @RequestMapping일 때 {}값을 가져오려면 @PathVariable을 사용하지만
 	// @MessageMapping일 때에는 @DestinationVariable을 사용한다.

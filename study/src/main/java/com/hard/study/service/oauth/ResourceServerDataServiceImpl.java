@@ -10,9 +10,6 @@ import com.hard.study.dao.oauth.ResourceServerDataDao;
 import com.hard.study.vo.oauth.ResourceVo;
 import com.hard.study.vo.oauth.UserInfoVo;
 
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
 @Service("resourceServerDataService")
 public class ResourceServerDataServiceImpl implements ResourceServerDataService {
 	

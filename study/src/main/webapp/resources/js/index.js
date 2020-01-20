@@ -33,7 +33,7 @@ import { rootSaga } from "./saga/RootSaga";
 import "bootstrap/dist/css/bootstrap.css";
 
 // swiper css추가
-import "swiper/css/swiper.css";
+// import "swiper/css/swiper.css";
 // import "swiper/css/swiper.min.css";
 // import "swiper/swiper.scss";
 

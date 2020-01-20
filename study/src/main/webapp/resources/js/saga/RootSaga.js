@@ -1,6 +1,7 @@
 import { all } from "redux-saga/effects";
-import { studyWatch, resourceWatch, logoutWatch, regContentsWatch } from "./Saga";
+import { studyWatch, resourceWatch, logoutWatch } from "./Saga";
 import { basicArrWatch, basicObjWatch, objectArrWatch, formDataWatch } from "./AlgorithmSaga";
+import { regContentsWatch, boardListWatch } from "./BoardSaga";
 
 export function* rootSaga() {
 	
@@ -9,7 +10,9 @@ export function* rootSaga() {
 		studyWatch(),
 		resourceWatch(),
 		logoutWatch(),
+		
 		regContentsWatch(),
+		boardListWatch(),
 
 		basicArrWatch(),
 		basicObjWatch(),

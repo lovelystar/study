@@ -41,10 +41,6 @@ export function* logoutWatch() {
 	
 }
 
-export function* regContentsWatch() {
-	yield takeLatest(createActionReducer.regContents, regContentsAction);
-}
-
 // study ( client ) _ 현재 프로젝트 서버 호출
 function* studyAction(requestData, dispatch) {
 
@@ -73,7 +69,7 @@ function* resourceAction(requestData) {
 		const authority = requestData.payload.payload;
 		const data = yield call([axiosResource, axiosResource.post], "/authenticated/authority", authority);
 //		const data = yield call([axiosResource, axiosResource.post], "/authenticated/username", authority);
-		
+		console.log("saga data = " + data);
 		yield put(createActionReducer.receivedResourceSucceed(data));
 		
 	} catch(error) {
@@ -102,39 +98,4 @@ function* logoutAction(objData) {
 		
 	}
 	
-}
-
-
-
-// 콘텐츠 업로드
-function* regContentsAction(contentsArray) {
-	
-	try{
-		/*
-		const testForm = new FormData();
-		const fileParam = contentsArray.payload;
-		
-		// 동적 FormData일 때
-		const formDataArr = new Array;
-
-		console.log("fileParam = " + fileParam);
-		console.log("fileParam length = " + fileParam.length);
-		*/
-
-		const testForm = new FormData();
-		
-		contentsArray.payload.map((params, i) => {
-
-			testForm.append("randomNames", params.randomName);
-			testForm.append("files", params.file);
-
-		});
-		
-		const fdResult = yield call([axiosFormData, axiosFormData.post], "/regcontents", testForm);
-
-	} catch(error) {
-		
-		yield put(createActionReducer.appError(error));
-		
-	}
 }

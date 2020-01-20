@@ -1,0 +1,156 @@
+$pc: 1200px;
+$note: 1024px;
+$tablet: 768px;
+$mobile: 480px;
+$minimum: 320px;
+
+// 반응형 코드 정의
+@mixin responsive($wide) {
+    @if $wide == pc-wide {
+        @media only screen and (max-width: $pc){ // 1200px
+            @content;
+        }
+    } @else if $wide == note-wide {
+        @media only screen and (max-width: $note){ // 1024px
+            @content;
+        }
+    } @else if $wide == tablet-wide {
+        @media only screen and (max-width: $tablet){ // 768px
+            @content;
+        }
+    } @else if $wide == mobile-wide {
+        @media only screen and (max-width: $mobile){ // 480px
+            @content;
+        }
+    } @else if $wide == minimum-wide {
+        @media only screen and (max-width: $minimum){ // 320px
+            @content;
+        }
+    }
+
+}
+
+.wsWrap {
+    z-index: 10;
+    position: relative;
+    margin-top: 56px;
+    color: #666666;
+    font-family: 'Noto Sans KR' !important;
+
+    section {
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 50px;
+
+        .ws_container {
+            margin: 0 auto;
+            padding: 0 40px;
+            max-width: 1280px;
+
+            label {
+                font-size: 1.25rem;
+                width: 100%;
+                margin: 0;
+                padding: 5px 0;
+            }
+
+            button {
+                display: inline-block;
+                width: 15%;
+                margin-right: 20px;
+                padding: 10px 0;
+                background: #ffffff;
+                border: 1px solid #ff0073;
+                color: #ff0073;
+                text-align: center;
+                cursor: pointer;
+                transition: .2s ease;
+
+                &:hover {
+                    font-weight: bold;
+                    color: #ffffff;
+                    background: #ff0073;
+                }
+
+                &:last-child {
+                    margin: 0;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+
+            }
+
+            input {
+                max-height: 30px;
+                min-height: 30px;
+                padding: 0px 5px;
+                font-size: 0.85em;
+                color: #666666;
+                width: 50%;
+
+                &:focus {
+                    border: 1px solid #ff0073;
+                }
+
+            }
+
+            .ws_title {
+                text-align: left;
+
+                h2 {
+                    position: relative;
+                    padding: 50px 0 35px 0;
+                    font-weight: bold;
+                    font-size: 1.875em;
+                    color: #ff0073;
+                    margin: 0;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        top: 95px;
+                        left: 0px;
+                        width: 100%;
+                        height: 2px;
+                        background-color: #ff0073;
+                    }
+
+                }
+            }
+            
+            .ws_info {
+                text-align: left;
+                margin-bottom: 30px;
+            }
+
+            .ws_room {
+                margin-bottom: 30px;
+            }
+
+            .ws_connect {
+                margin-bottom: 30px;
+            }
+
+            .ws_message {
+                margin-bottom: 30px;
+
+                button {
+                    margin-left: 30px;
+                    padding: 2.5px 0;
+                }
+
+            }
+
+            .ws_result {
+                margin-bottom: 30px;
+                label {
+                    border-bottom: 1.5px solid #ff0073;
+                }
+            }
+
+        }
+
+    }
+}

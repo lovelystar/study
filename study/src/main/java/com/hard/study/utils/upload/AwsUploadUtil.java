@@ -12,9 +12,9 @@ import com.amazonaws.services.s3.transfer.Upload;
 
 public class AwsUploadUtil {
 	
-	private static final String BURKETNAME = "abc";
-	private static final String ACCESS_KEY = "ACCESS_KEY";
-	private static final String SECRET_KEY = "SECRET_KEY";
+	private static final String BURKETNAME = "S3_Storage";
+	private static final String ACCESS_KEY = "AKIAIHSN6HAI7NOTUVXQ";
+	private static final String SECRET_KEY = "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";
 	private AmazonS3 s3;
 	
 	public void upload(String savedName, File awsTarget) throws Exception {

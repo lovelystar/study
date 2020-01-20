@@ -1,35 +1,31 @@
 package com.hard.study.utils.upload;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUploadUtil {
-	
-	public static void fileUpload(String basePath, MultipartFile file, String randomName) throws Exception {
-		
-		Map<String, Object> resultMap = new HashMap<>();
+
+	public static Integer fileUpload(String basePath, MultipartFile file, String randomName) throws Exception {
 		
 		InputStream is = null;
 		OutputStream os = null;
 		
+		Integer SuccessTriger = 0;
+		
 		String fileName = file.getOriginalFilename();
-		long fileSize = file.getSize();
+		// long fileSize = file.getSize();
 		
 		// 확장자
 		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 		
 		// 폴더 생성 ( 폴더명 )
-		String dirFolder = mkDir(basePath);
+		// String dirFolder = mkDir(basePath);
 		
 		// 파일명
 		String savedName = randomName + "." + formatName;
@@ -53,7 +49,8 @@ public class FileUploadUtil {
 			int readByte = 0;
 			
 			is = file.getInputStream();
-			os = new FileOutputStream(basePath + dirFolder + savedName);
+			// os = new FileOutputStream(basePath + dirFolder + savedName);
+			os = new FileOutputStream(basePath + savedName);
 			
 			// 대용량 업로드는 이 부분을 수정하면 됩니다.
 			// byte[] buffer = new byte[8192];
@@ -99,6 +96,7 @@ public class FileUploadUtil {
 			}
 			*/
 			
+			SuccessTriger = 1;
 			
 		} catch(Exception e) {
 			
@@ -118,6 +116,7 @@ public class FileUploadUtil {
 		AwsUploadUtil awsS3 = new AwsUploadUtil();
 		awsS3.upload(savedName, awsTarget);
 		*/
+		return SuccessTriger;
 		
 	}
 	
@@ -139,13 +138,14 @@ public class FileUploadUtil {
 			baseFolder.mkdir();
 			
 		}
-		
+		/*
 		File eachFolder = new File(basePath + calFullPath);
 		if(!eachFolder.exists()) {
 			
 			eachFolder.mkdir();
 			
 		}
+		*/
 		
 		return calFullPath + "\\";
 		
