@@ -89,7 +89,7 @@ public class ClientController {
 	}
 	
 	@RequestMapping(value="/callback", method=RequestMethod.GET)
-	public ModelAndView callBack(@RequestParam("code") String code, @RequestParam("state") String state) throws Exception {
+	public ModelAndView callBack(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		AuthorizationTokenDto tokenDto = new AuthorizationTokenDto();
@@ -116,7 +116,19 @@ public class ClientController {
 				tokenVo.setResultCode(CommonCode.SUCCESS_CODE);
 				// restTemplate에 accessToken 세팅
 				restTemplate.getOAuth2ClientContext().setAccessToken(new DefaultOAuth2AccessToken(tokenVo.getAccessToken()));
-				RedirectView redirectView = new RedirectView(env.getProperty("server.servlet.context-path") + "/client/");
+				
+				
+				// RedirectView redirectView = new RedirectView(env.getProperty("server.servlet.context-path") + "/client/");
+				Cookie destCookie = WebUtils.getCookie(request, "dest");
+				String destination = destCookie.getValue();
+				
+				RedirectView redirectView = new RedirectView(destination);
+				
+				// 세팅하고 destCookie 삭제
+				destCookie.setPath("/study");
+				destCookie.setMaxAge(0);
+				response.addCookie(destCookie);
+				
 				mav.setView(redirectView);
 				
 				// 오류가 났으면 Exception 떨어지게 해라.
@@ -129,7 +141,17 @@ public class ClientController {
 			
 		} catch(Exception e) {
 			
-			RedirectView redirectView = new RedirectView(env.getProperty("server.servlet.context-path") + "/client/");
+			// RedirectView redirectView = new RedirectView(env.getProperty("server.servlet.context-path") + "/client/");
+			Cookie destCookie = WebUtils.getCookie(request, "dest");
+			String destination = destCookie.getValue();
+			
+			RedirectView redirectView = new RedirectView(destination);
+			
+			// 세팅하고 쿠키 삭제
+			destCookie.setPath("/study");
+			destCookie.setMaxAge(0);
+			response.addCookie(destCookie);
+			
 			mav.setView(redirectView);
 			
 			return mav;
@@ -169,6 +191,7 @@ public class ClientController {
 		return cookieToken;
 		
 	}
+
 	
 	@ResponseBody
 	@RequestMapping(value="/logout", method=RequestMethod.POST)

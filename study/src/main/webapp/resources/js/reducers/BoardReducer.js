@@ -12,6 +12,12 @@ export const regContentsSucceed = createAction("REG_CONTENTS_SUCCEED", (payload)
 export const getBoard = createAction("BOARD_LIST", (curPage) => (curPage)); // 글 목록
 export const getBoardSuccess = createAction("BOARD_LIST_SUCCESS", (payload) => (payload));
 
+export const getBoardInfo = createAction("BOARD_INFO", (boardIdx) => (boardIdx)); // 글 상세
+export const getBoardInfoSuccess = createAction("BOARD_INFO_SUCCESS", (payload) => (payload));
+
+export const like = createAction("LIKE", (param) => (param)); // 좋아요
+export const likeResult = createAction("LIKE_RESULT", (payload) => (payload));
+
 export const appError = createAction("APP_ERROR"); // 에러
 
 export const BoardReducer = handleActions({
@@ -34,6 +40,20 @@ export const BoardReducer = handleActions({
 		// console.log("board action.payload = " + action.payload); // << [object Object]
 		// console.log("board action.payload.data = " + action.payload.data); // [object Object] 안의 [object Object]들
 		return {...state, loading: false, result: action.payload.data, payload: action.payload.data};
+	},
+
+	[getBoardInfo]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[getBoardInfoSuccess]: (state, action) => {
+		return {...state, loading: false, result: action.payload.data, payload: action.payload.data, like: action.payload.data.likedUser};
+	},
+
+	[like]: (state, action) => {
+		return {...state, loading: false};
+	},
+	[likeResult]: (state, action) => {
+		return {...state, loading: false, likeResult: action.payload.data.resultInteger, like: action.payload.data.likedUser};
 	},
 
 	[appError]: (state, action) => {

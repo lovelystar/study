@@ -52,7 +52,7 @@ $minimum: 320px;
 
                 h2 {
                     position: relative;
-                    padding: 50px 0 35px 0;
+                    padding: 50px 0 35px 12px;
                     font-weight: bold;
                     font-size: 1.875em;
                     color: #ff0073;
@@ -71,6 +71,7 @@ $minimum: 320px;
             }
 
             .board_detail {
+
                 .board_write_button {
 
                     text-align: right;
@@ -94,8 +95,14 @@ $minimum: 320px;
                         }
                     }
                 }
+
                 .board_info {
-                    padding: 50px 0 30px;
+                    padding: 50px 0 30px 12px;
+
+                    p {
+                        margin: 0;
+                        padding: 0;
+                    }
 
                     table {
                         width: 100%;
@@ -242,6 +249,282 @@ $minimum: 320px;
                     }
 
                 }
+
+
+
+
+                .board_list {
+                    padding-left: 12px;
+
+                    .board_list_wrap {
+                        display: inline-block;
+
+                        #board_back_btn {
+                            text-decoration: none;
+                            display: inline-block;
+                            width: 130px;
+                            height: 46px;
+                            line-height: 42px;
+                            background: #ffffff;
+                            border: 1px solid #ff0073;
+                            color: #ff0073;
+                            text-align: center;
+                            cursor: pointer;
+                            transition: .2s ease;
+    
+                            &:hover {
+                                font-weight: bold;
+                                color: #ffffff;
+                                background: #ff0073;
+                            }
+                        }
+                    }
+
+                    .board_lv {
+                        float: right;
+                        margin-top: 12px;
+                        font-size: 0.85rem;
+                        color: #666666;
+
+                        a, span {
+                            padding-left: 20px;
+                            position: relative;
+                            display: inline-block;
+                            cursor: pointer;
+                        }
+
+                        span {
+                            margin-left: 12px;
+                            cursor: default;
+                        }
+
+                        a::after, span::after {
+                            content: "";
+                            display: inline-block;
+                            position: absolute;
+                            left: 0;
+                            top: 50%;
+                            width: 18px;
+                            height: 18px;
+                            margin-top: -8px;
+                            background-repeat: no-repeat;
+                            background-size: 18px;
+                            vertical-align: top;
+                            opacity: .4;
+                            transition: .3s ease;
+                        }
+    
+                        #board_likes {
+
+                            &.likeActive {
+                                &::after {
+                                    opacity: 1;
+                                    background-image: url("../img/port_like.svg");
+                                }
+                            }
+    
+                            &::after {
+                                background-image: url("../img/port_like.svg");
+                            }
+    
+                            &:hover {
+                                &::after {
+                                    background-image: url("../img/port_like.svg");
+                                    opacity: 1;
+                                }   
+                            }
+
+                        }
+    
+                        #board_views {
+                            
+                            &::after {
+                                background-image: url("../img/port_views.svg");
+                            }
+                        }
+
+                    }
+
+                }
+
+                
+
+            }
+
+            .board_comment {
+                border-top: 1px solid #dfdfdf;
+                padding: 30px 12px;
+                margin-top: 25px;
+
+                .board_comment_wrap {
+                    margin-top: 20px;
+                    box-sizing: border-box;
+                    position: relative;
+                    border: 1px solid #dfdfdf;
+
+                    #comment_disable {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 15;
+                        opacity: .5;
+                        cursor: default;
+                        background-color: #ffffff;
+                        text-align: center;
+                        display: inline-block;
+                        transition: .3s ease;
+
+                        &.active{
+                            opacity: 1;
+                            cursor: pointer;
+                            
+                            a {
+                                color: #ffffff;
+                                background: #ff0073;
+                                font-weight: bold;
+                            }
+
+                        }
+
+                        p {
+                            margin: 35px auto;
+                        }
+
+                        a {
+                            display: inline-block;
+                            width: 20%;
+                            margin-top: 10px;
+                            padding: 10px 30px;
+                            background: #ffffff;
+                            border: 1px solid #ff0073;
+                            color: #ff0073;
+                            text-align: center;
+                            cursor: pointer;
+                            transition: .2s ease;
+
+                            @include responsive(tablet-wide) {
+                                padding: 10px 15px;
+                            }
+                            @include responsive(mobile-wide) {
+                                width: 35%;
+                                padding: 10px 5px;
+                            }
+                        }
+
+                    }
+
+                    &.focus {
+                        border: 1px solid #ff0073;
+
+                        .comment_reply_btn {
+                            border-top: 1px solid #ff0073;
+                        }
+
+                    }
+
+                    .comment_reply_area {
+                        padding: 20px 5px 20px 20px;
+                        position: relative;
+                        height: 180px;
+
+                        #replyArea {
+                            width: 100%;
+                            resize: none;
+                            border: 0;
+                            height: 90px;
+                            color: #888888;
+                            letter-spacing: 0.5px;
+                            font-size: 14px;
+                        }
+
+                    }
+
+                    .comment_reply_btn {
+                        background-color: #ffefeb;
+                        position: absolute;
+                        width: 100%;
+                        padding: 5px;
+                        bottom: 0;
+                        border-top: 1px solid #dfdfdf;
+
+                        .reply_left {
+                            float: left;
+                            margin: 5px;
+                            width: 30px;
+                            height: 30px;
+
+                            .filtImg_label {
+                                position: relative;
+                                background-image: url("../img/port_camera.png");
+                                background-repeat: no-repeat;
+                                background-size: 30px;
+                                background-position: center;
+                                opacity: .5;
+                                width: 30px;
+                                height: 30px;
+                                margin: 0;
+                                padding: 0;
+                                cursor: pointer;
+                            }
+
+                            #fileImg {
+                                display: none;
+                            }
+
+                        }
+
+                        .reply_right {
+                            float: right;
+
+                            .reply_count {
+                                position: relative;
+                                display: inline-block;
+                                padding-right: 10px;
+                                font-size: 14px;
+                                color: #8c919a;
+                                font-weight: bold;
+
+                                &.disable {
+                                    color: #ff0073;
+                                }
+
+                                #rc {
+                                    font-style: normal;
+                                    &.cnt {
+                                        color: #ff0073;
+                                    }
+                                }
+
+
+                            }
+
+                            #replySubmit {
+                                text-decoration: none;
+                                display: inline-block;
+                                padding: 7px 30px;
+                                background: #ffffff;
+                                border: 1px solid #ff0073;
+                                color: #ff0073;
+                                text-align: center;
+                                cursor: pointer;
+                                transition: .2s ease;
+                                
+                                &:hover {
+                                    font-weight: bold;
+                                    color: #ffffff;
+                                    background: #ff0073;
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
             }
 
             .pagination_wrap {
@@ -291,6 +574,27 @@ $minimum: 320px;
                 }
             }
 
+        }
+
+        .reply_container {
+            margin: 0 auto;
+            padding: 12px;
+            max-width: 1280px;
+            border-top: 2px solid #dfdfdf;
+            border-bottom: 1.5px solid #dfdfdf;
+
+            p{
+                margin: 20px auto 7px;
+                font-size: 20px;
+                color: #555555;
+                font-weight: bold;
+
+                span {
+                    margin-left:7px;
+                    color: #ff0073;
+                }
+
+            }
         }
 
     }
@@ -635,6 +939,131 @@ $minimum: 320px;
 
             }
         }
+    }
+
+}
+
+#loginAlertMask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    z-index: 15;
+    background-color: #000000;
+    opacity: 0;
+    transition: .3s ease;
+
+    &.active {
+        opacity: 0.35;
+        height: 100%;
+    }
+
+}
+
+#loginAlertMaskForm {
+    position: fixed;
+    top: 30%;
+    left: 25%;
+    width: 50%;
+    height: 0%;
+    z-index: 20;
+    background-color: #ffffff;
+    transition: .3s ease;
+
+    #loginMaskWrap {
+        opacity: 0;
+        transition: .5s ease;
+        display: none;
+    }
+
+    &.active {
+        height: 40%;
+        
+        #loginMaskWrap {
+
+            width: 100%;
+            display: block;
+            color: #666666;
+
+            #loginMaskClose {
+                position: relative;
+                float: right;
+                width: 30px;
+                height: 30px;
+                margin: 15px;
+                cursor: pointer;
+        
+                i {
+                    position: absolute;
+                    left: 0;
+                    width: 100%;
+                    height: 1px;
+                    background: #ff0073;
+                    transition: all .3s ease;
+        
+                    &:nth-child(2n-1){
+                        transform: translateX(0) translateY(10px) rotate(45deg);
+                    }
+        
+                    &:nth-child(2n){
+                        transform: translateX(0) translateY(10px) rotate(-45deg);
+                    }
+        
+                }
+            }
+
+            #loginAlert {
+                padding: 60px 0 30px;
+                text-align: center;
+
+                img {
+                    width: 40px;
+                    margin: 0 auto 15px;
+                }
+
+                p {
+                    margin: 0;
+                    font-weight: bold;
+                    color: #222222;
+                    font-size: 20px
+                }
+
+            }
+
+            #loginConfirm {
+                padding: 0 20px;
+                width: 100%;
+
+                a{
+                    display: inline-block;
+                    text-decoration: none;
+                    float: left;
+                    color: #ff0073;
+                    font-size: 16px;
+                    line-height: 3rem;
+                    border: 1px solid #ff0073;
+                    cursor: pointer;
+                    box-sizing: border-box;
+                    text-align: center;
+                    margin: 0 2%;
+                    width: 46%;
+                    background: #ffffff;
+                    transition: .2s ease;
+                    
+                    &:hover {
+                        text-decoration: none;
+                        font-weight: bold;
+                        color: #ffffff;
+                        background: #ff0073;
+                    }
+
+                }
+
+            }
+
+        }
+
     }
 
 }

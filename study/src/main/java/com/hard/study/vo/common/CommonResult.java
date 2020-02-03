@@ -9,5 +9,7 @@ public class CommonResult {
 	
 	private int resultCode;
 	private String resultMessage;
+	private int resultInteger;
+	private String resultString;
 	
 }

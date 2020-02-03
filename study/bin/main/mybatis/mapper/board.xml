@@ -15,6 +15,16 @@
 		)
 	</insert>
 	
+	<!-- 글 각각 좋아요 수 -->
+	<select id="getBoardLike" parameterType="Integer" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			board_likes
+		WHERE
+			idxBoard = #{idxBoard}
+	</select>
+	
 	<!-- 글에 첨부된 파일 -->
 	<insert id="regFiles" parameterType="com.hard.study.vo.board.BoardVo">
 		INSERT INTO contents (
@@ -89,4 +99,90 @@
 			idx;
 	</select>
 	
+	<!-- 좋아요 목록 ( 유저 리스트 ) -->
+	<select id="getBoardLikeUser" resultType="String">
+		SELECT
+			username
+		FROM
+			board_likes
+		WHERE
+			idxBoard = #{idxBoard}
+			AND boardType = #{boardType}
+	</select>
+	
+	<!-- 글 조회수 증가 -->
+	<update id="boardViews" parameterType="java.util.HashMap">
+		<selectKey keyProperty="views" resultType="int" order="BEFORE">
+			SELECT
+				boardViews AS views
+			FROM
+				board
+			WHERE
+				idx = #{idxBoard}
+		</selectKey>
+		UPDATE
+			board
+		SET
+			boardViews = #{views} + 1
+		WHERE
+			idx = #{idxBoard}
+	</update>
+	
+	
+	<!-- 글 상세 -->
+	<select id="getBoardInfo" resultType="java.util.HashMap">
+		SELECT
+			idx AS idx,
+			boardName AS boardName,
+			boardDetails AS boardDetails,
+			boardViews AS boardViews,
+			(
+				SELECT
+					COUNT(idx)
+				FROM
+					board_likes
+				WHERE
+					idxBoard = #{idxBoard}
+			) AS boardLikes,
+			regdate AS regdate,
+			uptdate AS uptdate
+		FROM
+			board
+		WHERE
+			boardable = 1
+			AND idx = #{idxBoard};
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addLike" parameterType="com.hard.study.vo.board.BoardLikeVo">
+		INSERT INTO
+			board_likes (
+				idxBoard,
+				boardType,
+				idxUser,
+				idxUserGroup,
+				username,
+				regdate
+			) VALUES (
+				#{idxBoard},
+				#{boardType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				NOW()
+			)
+	</insert>
+	
+	<!-- 좋아요 빼기 -->
+	<delete id="subLike" parameterType="com.hard.study.vo.board.BoardLikeVo">
+		DELETE FROM
+			board_likes
+		WHERE
+			idxBoard = #{idxBoard}
+			AND boardType = #{boardType}
+			AND idxUser = #{gmIdx}
+			AND idxUserGroup = #{grIdx}
+			AND username = #{username}
+			
+	</delete>
 </mapper>

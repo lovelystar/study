@@ -8,10 +8,14 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import com.hard.study.utils.login.AuthInterceptorUtil;
+import com.hard.study.utils.login.LoginInterceptorUtil;
 
 @Configuration
 @EnableWebMvc
@@ -47,21 +51,28 @@ public class ClientWebMVCConfig implements WebMvcConfigurer {
 		
 	}
 	
-//	// 인터셉터
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		
-//		registry.addInterceptor(new LoginInterceptor())
-//				.addPathPatterns("/loginPost");
-//		
-////		registry.addInterceptor(authInterceptor())
-//		registry.addInterceptor(new AuthInterceptor())
-//				.addPathPatterns("/**")
-//		
+	// 인터셉터
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		
+		
+		registry
+			.addInterceptor(new LoginInterceptorUtil())
+			.addPathPatterns("/login");
+		
+		registry
+			.addInterceptor(new AuthInterceptorUtil())
+			.addPathPatterns("/**")
+			
+			.excludePathPatterns("/login")
+			.excludePathPatterns("/thumbs")
+			.excludePathPatterns("/resources/**");
+			
 //		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 //		localeChangeInterceptor.setParamName("lang");
 //		registry.addInterceptor(localeChangeInterceptor);
-//	}
+		
+	}
 	
 	@Bean
 	public MessageSource messageSource(){

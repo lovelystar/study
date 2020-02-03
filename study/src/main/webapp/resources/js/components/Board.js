@@ -19,10 +19,13 @@ class Board extends Component {
 
 		super(props);
 		this.state = {
-            uploadList : [],
-            checkList : [],
-            isAllChecked : false,
-            currentPage : 1,
+            uploadList: [],
+            checkList: [],
+            isAllChecked: false,
+            currentPage: 1,
+            username: document.getElementById("username").value,
+            gIdx: document.getElementById("gIdx").value,
+            gmIdx: document.getElementById("gmIdx").value,
 		}
 		
         this.fileDrop = this.uploadFormDrop.bind(this);
@@ -30,15 +33,16 @@ class Board extends Component {
 
     }
 
-
-
-
     componentDidMount() {
+
         let curPage = this.state.currentPage;
         this.getBoardList(curPage);
-
+ 
         // 스크롤 이벤트
         window.addEventListener("scroll", this.scrollEvent);
+        console.log("username = " + this.state.username);
+        console.log("gIdx = " + this.state.gIdx);
+        console.log("gmIdx = " + this.state.gmIdx);
     }
 
     scrollEvent = () => {
@@ -135,8 +139,8 @@ class Board extends Component {
                         "</td>" + 
                         "<td class='boardview' key=" + boardList.idx + ">" + boardList.boardName + "</td>" + 
                         "<td>user</td>" + 
-                        "<td>" + boardList.boardViews + "</td>" +  
-                        "<td>0</td>" + 
+                        "<td>" + boardList.boardViews + "</td>" + 
+                        "<td>" + boardList.boardLikes + "</td>" + 
                         "<td>" + parseDate + "</td>" + 
                     "</tr>";
 
@@ -149,7 +153,7 @@ class Board extends Component {
                         "<td class='boardview' key=" + boardList.idx + ">" + boardList.boardName + "</td>" + 
                         "<td>user</td>" + 
                         "<td>" + boardList.boardViews + "</td>" + 
-                        "<td>0</td>" + 
+                        "<td>" + boardList.boardLikes + "</td>" + 
                         "<td>" + parseDate + "</td>" + 
                     "</tr>";
 
@@ -305,33 +309,42 @@ class Board extends Component {
 
     regForm = (e) => {
 
-        let upldMaskForm = document.getElementById("uploadMaskForm");
-        let upldMask = document.getElementById("uploadMask");
-        let htmlTag = document.getElementsByTagName("html")[0];
-        let textForm = document.getElementById("boardTextForm");
+        const username = this.state.username;
+        console.log("state username = " + username);
+        if(username == "" || username == null || username == "undefined"){
 
-        upldMaskForm.className == "active" ? upldMaskForm.classList.remove("active") : upldMaskForm.classList.add("active");
-        upldMask.className == "active" ? this.txtFormFadeOut(uploadMaskForm, textForm) : this.txtFormFadeIn(uploadMaskForm, textForm);
-        upldMask.className == "active" ? upldMask.classList.remove("active") : upldMask.classList.add("active");
+            location.href = "/study/login";
 
-        htmlTag.style.overflow == "hidden" ? htmlTag.style.overflow = "auto" : htmlTag.style.overflow = "hidden";
+        } else {
 
-        // value 정의
-        document.getElementById("subject").value = "";
-        document.getElementById("comment").value = "";
+            let upldMaskForm = document.getElementById("uploadMaskForm");
+            let upldMask = document.getElementById("uploadMask");
+            let htmlTag = document.getElementsByTagName("html")[0];
+            let textForm = document.getElementById("boardTextForm");
+    
+            upldMaskForm.className == "active" ? upldMaskForm.classList.remove("active") : upldMaskForm.classList.add("active");
+            upldMask.className == "active" ? this.txtFormFadeOut(uploadMaskForm, textForm) : this.txtFormFadeIn(uploadMaskForm, textForm);
+            upldMask.className == "active" ? upldMask.classList.remove("active") : upldMask.classList.add("active");
+    
+            htmlTag.style.overflow == "hidden" ? htmlTag.style.overflow = "auto" : htmlTag.style.overflow = "hidden";
+    
+            // value 정의
+            document.getElementById("subject").value = "";
+            document.getElementById("comment").value = "";
+    
+            contentsArray = new Array();
+            document.getElementsByClassName("uploadHeader")[0].style.display = "none";
+            document.getElementById("uploadControl").style.display = "none";
+            
+            // 자식노드 전체 삭제
+            let upldList = document.getElementsByClassName("uploadList")[0];
+            // upldList.innerHTML = "";
+            while(upldList.firstChild) {
+                upldList.removeChild(upldList.firstChild);
+            }
 
-        contentsArray = new Array();
-        document.getElementsByClassName("uploadHeader")[0].style.display = "none";
-        document.getElementById("uploadControl").style.display = "none";
-        
-        // 자식노드 전체 삭제
-        let upldList = document.getElementsByClassName("uploadList")[0];
-        // upldList.innerHTML = "";
-        while(upldList.firstChild) {
-            upldList.removeChild(upldList.firstChild);
         }
 
-        
     }
     
     txtFormFadeIn = (mElement, tElement) => {
@@ -639,9 +652,13 @@ class Board extends Component {
 
     regConts = (e) => {
 
+        let subject = document.getElementById("subject").value;
+        let comment = document.getElementById("comment").value;
+        comment = comment.replace(/(\n|\r\n)/g, "<br />");
+
         let textObj = new Object();
-        textObj.subject = document.getElementById("subject").value;
-        textObj.comment = document.getElementById("comment").value;
+        textObj.subject = subject;
+        textObj.comment = comment;
         textObj.fileList = contentsArray;
 
         this.props.regContents(textObj);

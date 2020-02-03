@@ -23,18 +23,18 @@ import { delay, call, put, all, select, take, takeEvery, takeLatest } from "redu
 import * as BoardReducer from "../reducers/BoardReducer";
 import { axiosStudy, axiosAuth, axiosResource, axiosFormData } from "../api/AxiosApi";
 
-export function* boardListWatch() {
-    yield takeLatest(BoardReducer.getBoard, getBoardAction);
-}
-
-export function* regContentsWatch() {
-	yield takeLatest(BoardReducer.regContents, regContentsAction);
+export function* boardWatch() {
+	yield takeLatest(BoardReducer.getBoard, getBoardAction); // 콘텐츠 업로드
+	yield takeLatest(BoardReducer.getBoardInfo, getBoardInfoAction); // 글 목록
+	yield takeLatest(BoardReducer.regContents, regContentsAction); // 글 상세
+	yield takeLatest(BoardReducer.like, likeAction); // 좋아요
 }
 
 // 콘텐츠 업로드
 function* regContentsAction(textObj) {
 	
 	try{
+		
 		/*
 		const testForm = new FormData();
 		const fileParam = contentsArray.payload;
@@ -110,5 +110,38 @@ function* getBoardAction(curPage) {
 		
 		yield put(BoardReducer.appError(error));
 		
+	}
+}
+
+// 글 상세
+function* getBoardInfoAction(boardIdx) {
+	
+	try {
+		
+		const param = new Object();
+		param.idx = boardIdx.payload;
+		param.boardType = "board";
+
+		const result = yield call([axiosStudy, axiosStudy.post], "/boardinfo", param);
+		yield put(BoardReducer.getBoardInfoSuccess(result));
+		
+	} catch(error) {
+
+	}
+
+}
+
+// 좋아요
+function* likeAction(param) {
+	try {
+		
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/boardlike", data);
+		yield put(BoardReducer.likeResult(result));
+		
+		document.getElementById("board_likes").innerHTML = result.data.resultInteger;
+
+	} catch(error) {
+
 	}
 }

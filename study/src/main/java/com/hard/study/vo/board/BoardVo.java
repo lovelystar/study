@@ -13,6 +13,7 @@ public class BoardVo extends PageMaker {
 	
 	private int idx;
 	private int idxBoard;
+	private String boardType;
 	private String boardName;
 	private String boardDetails;
 	private int boardViews;

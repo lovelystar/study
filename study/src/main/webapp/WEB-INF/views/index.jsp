@@ -29,7 +29,11 @@
 	</head>
 	<body class="body-home">
 		
-		<input type="hidden" id="username" value="${username}" />
+		<input type="hidden" id="username" value="${username}" /> <!-- user -->
+		<input type="hidden" id="gmIdx" value="${gmIdx}" /> <!-- group member idx -->
+		<input type="hidden" id="gIdx" value="${gIdx}" /> <!-- group Idx -->
+		<input type="hidden" id="idxParam" value="${idxParam}" />
+
 		<div id="root"></div>
 		<script src="/study/resources/build/bundle.js"></script>
 		

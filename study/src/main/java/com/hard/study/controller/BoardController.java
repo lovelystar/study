@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hard.study.service.board.BoardService;
+import com.hard.study.service.oauth.CookieService;
 import com.hard.study.utils.upload.FileUploadUtil;
+import com.hard.study.vo.board.BoardLikeVo;
 import com.hard.study.vo.board.BoardVo;
 import com.hard.study.vo.common.CommonCode;
 import com.hard.study.vo.common.CommonResult;
@@ -33,13 +38,41 @@ public class BoardController {
 	private String uploadPath;
 	
 	@Autowired
+	private OAuth2RestOperations restTemplate;
+	
+	@Autowired
+	private CookieService cookieService;
+	
+	@Autowired
 	private BoardService boardService;
 	
 	@RequestMapping(value="/board", method=RequestMethod.GET)
-	public ModelAndView board() throws Exception {
+	public ModelAndView board(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//String accessToken = restTemplate.getAccessToken().toString();
+		String username = null;
+		Integer gmIdx = 0;
+		Integer gIdx = 0;
+		
+		// client의 기존 인증정보( AccessToken )이 있는지 확인
+		// null이면 default value 그대로 적용
+		if(restTemplate.getOAuth2ClientContext().getAccessToken() == null) {
+			
+		} else {
+			
+			String accessToken = restTemplate.getAccessToken().toString();
+			username = cookieService.getUsernameCookieCheck(request, accessToken, response);
+			gmIdx = 1; // service 태워서 idx 확인
+			gIdx = 1; // service 태워서 idx 확인
+			
+		}
 		
 		ModelAndView mav = new ModelAndView();
+		
 		mav.setViewName("index");
+		mav.addObject("username", username);
+		mav.addObject("gmIdx", gmIdx);
+		mav.addObject("gIdx", gIdx);
 		
 		return mav;
 		
@@ -120,7 +153,7 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping(value="/boardlist", method=RequestMethod.POST)
-	public Map<String, Object> boardListt(@RequestBody BoardVo vo) throws Exception {
+	public Map<String, Object> boardList(@RequestBody BoardVo vo) throws Exception {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
@@ -144,6 +177,7 @@ public class BoardController {
 			map.put("boardName", boardList.get(i).getBoardName());
 			map.put("boardDetails", boardList.get(i).getBoardDetails());
 			map.put("boardViews", boardList.get(i).getBoardViews());
+			map.put("boardLikes", boardService.getBoardLike(boardList.get(i).getIdx()));
 			map.put("uptdate", boardList.get(i).getUptdate());
 			
 			// 글 목록 ( 파일리스트 )
@@ -192,16 +226,94 @@ public class BoardController {
 		
 	}
 	
-	
 	@RequestMapping(value="/boardview", method=RequestMethod.GET)
-	public ModelAndView boardView(@RequestParam("boardno") Integer boardIdx) throws Exception {
+	public ModelAndView boardView(@RequestParam("boardno") Integer boardIdx, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		System.out.println("boardidx = " + boardIdx);
+		String username = null;
+		Integer gmIdx = 0;
+		Integer gIdx = 0;
 		
+		// client의 기존 인증정보( AccessToken )이 있는지 확인
+		// null이면 default value 그대로 적용
+		if(restTemplate.getOAuth2ClientContext().getAccessToken() == null) {
+			
+		} else {
+			
+			String accessToken = restTemplate.getAccessToken().toString();
+			username = cookieService.getUsernameCookieCheck(request, accessToken, response);
+			gmIdx = 1; // service 태워서 idx 확인
+			gIdx = 1; // service 태워서 idx 확인
+			
+		}
+
 		ModelAndView mav = new ModelAndView();
+		
+		boardService.boardViews(boardIdx);
+		
 		mav.setViewName("index");
 		
+		mav.addObject("idxParam", boardIdx);
+		mav.addObject("username", username);
+		mav.addObject("gmIdx", gmIdx);
+		mav.addObject("gIdx", gIdx);
+		
 		return mav;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/boardinfo", method=RequestMethod.POST)
+	public Map<String, Object> boardInfo(@RequestBody BoardVo vo) throws Exception {
+		
+		int idxBoard = vo.getIdx();
+		String boardType = vo.getBoardType();
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> likeMap = new HashMap<String, Object>();
+		
+		likeMap.put("idxBoard", idxBoard);
+		likeMap.put("boardType", boardType);
+		
+		List<BoardVo> upldList = boardService.getBoardUpld(idxBoard);
+		List<String> likedUser = boardService.getBoardLikeUser(likeMap);
+		
+		resultMap = boardService.getBoardInfo(idxBoard);
+		resultMap.put("upldList", upldList);
+		resultMap.put("likedUser", likedUser);
+		
+		return resultMap;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/boardlike", method=RequestMethod.POST)
+	public Map<String, Object> boardLike(@RequestBody BoardLikeVo vo) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> likeMap = new HashMap<String, Object>();
+		
+		int idxBoard = vo.getIdxBoard();
+		String boardType = vo.getBoardType();
+
+		likeMap.put("idxBoard", idxBoard);
+		likeMap.put("boardType", boardType);
+		
+		int rwCnt = boardService.like(vo);
+		
+		if(rwCnt >= 1) {
+			
+			result.put("resultCode", CommonCode.SUCCESS_CODE);
+			result.put("resultInteger", boardService.getBoardLike(idxBoard));
+			result.put("likedUser", boardService.getBoardLikeUser(likeMap));
+			
+		} else {
+			
+			result.put("resultCode", CommonCode.FAIL_CODE);
+			result.put("resultInteger", -1);
+			
+		}
+		
+		return result;
 		
 	}
 	
