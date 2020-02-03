@@ -72,7 +72,8 @@ minimum: 320px,
 
         .header_category {
             display: block;
-            float: right;
+            float: left;
+            margin: 0 70px;
 
             ul {
 
@@ -116,6 +117,79 @@ minimum: 320px,
 
             @include media("<tablet") {
                 display: none;
+            }
+
+        }
+
+        #header_login {
+            float: right;
+
+            .header_profile {
+                display: none;
+
+                a {
+                    position: relative;
+                    padding: 10px 0;
+                    font-size: 1.25em;
+                    color: #666666;
+                    line-height: 56px;
+                    cursor: pointer;
+
+                    &:hover {
+                        text-decoration: none;
+                        color: #ff0073;
+                    }
+                    
+                    &:nth-child(1) {
+                        &::after {
+                            content: "";
+                            border-right: 1px solid #ff0073;
+                            margin: auto 15px;
+                        }
+                    }
+
+                }
+
+                img {
+                    border-radius: 50%;
+                    width: 30px;
+                    padding: 13px 0;
+                }
+
+                span {
+                    padding: 0 10px;
+                    color: #ff0073;
+                    font-weight: bold;
+                }
+
+                #profile_icon {
+                    padding: 0;
+                    width: 10px;
+                    opacity: .5;
+                    transition: .3s ease;
+                    /*&::before {
+                        content: "";
+                        background: url(../img/f107-icon.png) no-repeat;
+                    }*/
+                }
+
+                &.active {
+                    display: block;
+
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+            }
+
+            &.dropdown {
+                .header_profile {
+                    #profile_icon {
+                        transform: rotate(-180deg);
+                    }
+                }
             }
 
         }
@@ -181,6 +255,101 @@ minimum: 320px,
 
         }
 
+    }
+
+    #profile_dropdown {
+        max-width: 1280px;
+        margin: 56px auto 0;
+        padding: 0 40px;
+        /*
+        position: absolute;
+        right: 40px;
+        top: 56px;
+        width: 200px;
+        height: 400px;
+        background: #ffffff;
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2), 0 0 1px 0 rgba(0, 0, 0, 0.2);
+*/
+        #dropdown_container {
+            text-align: right;
+
+            #dropdown_wrap {
+                width: 200px;
+                text-align: left;
+                float: right;
+                background: #ffffff;
+                transition: .3s ease;
+                border-radius: 5px;
+                box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.2), 0 0 1px 0 rgba(0, 0, 0, 0.2);
+                opacity: 0;
+                visibility: hidden;
+
+                #dropdown_profile {
+                    padding: 7px 12px 0;
+                    
+                    a {
+                        img {
+                            border-radius: 50%;
+                            width: 30px;
+                            padding: 5px 0;
+                        }
+                        span {
+                            padding-left: 10px;
+                            font-weight: bold;
+                            color: #ff0073;
+                        }    
+                    }
+                    
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                }
+
+                #dropdown_info {
+                    margin: 0;
+                    margin-bottom: 7px;
+                    padding: 0;
+                    list-style: none;
+                    text-align: left;
+
+                    li {
+                        padding: 5px 12px;
+                        color: #666666;
+                        
+                        img {
+                            width: 20px;
+                            padding: 5px 0;
+                            opacity: .3;
+                        }
+                        span {
+                            position: relative;
+                            top: 1px;
+                            font-size: 13px;
+                            padding-left: 15px;
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                            background: #eeeeee;
+                        }
+
+                    }
+
+                }
+
+                &.dropdown {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                hr {
+                    margin: 4px 12px;
+                }
+
+            }
+
+        }
     }
 
     .logo {
