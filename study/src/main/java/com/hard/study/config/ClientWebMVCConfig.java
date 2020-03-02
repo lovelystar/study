@@ -21,7 +21,8 @@ import com.hard.study.utils.login.LoginInterceptorUtil;
 @EnableWebMvc
 public class ClientWebMVCConfig implements WebMvcConfigurer {
 	
-	private static final String localUploadPath = "C:\\localUploaded\\";
+	private static final String localUploadPath = "C:\\localUploaded\\board\\";
+	private static final String commentUploadPath = "C:\\localUploaded\\comment\\";
 	// private static final String serverUploadPath = "/home/centos/serverUploaded/";
 
 	@Bean
@@ -66,6 +67,7 @@ public class ClientWebMVCConfig implements WebMvcConfigurer {
 			
 			.excludePathPatterns("/login")
 			.excludePathPatterns("/thumbs")
+			.excludePathPatterns("/cthumbs")
 			.excludePathPatterns("/resources/**");
 			
 //		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
@@ -109,6 +111,11 @@ public class ClientWebMVCConfig implements WebMvcConfigurer {
 		// return serverUploadPath;
 		return localUploadPath;
 		
+	}
+	
+	@Bean
+	public String commentUploadPath() {
+		return commentUploadPath;
 	}
 	
 }

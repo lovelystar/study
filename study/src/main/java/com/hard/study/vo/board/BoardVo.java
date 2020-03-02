@@ -22,9 +22,11 @@ public class BoardVo extends PageMaker {
 	private String randomName;
 	private String filePath;
 	private byte[] fileBytes;
+	private String fileSize;
 	private String mimeType;
 	private int idxUser;
 	private int idxUserGroup;
+	private String username;
 	private Date regdate;
 	private Date uptdate;
 	

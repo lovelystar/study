@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hard.study.dao.report">
+	
+	<!-- 신고 했는지 확인 ( 이전에 신고했는지 확인 ) -->
+	<select id="chkReport" parameterType="com.hard.study.vo.report.ReportVo" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			report
+		WHERE
+			rType = #{type}
+			AND idxEtc = #{idxEtc}
+			AND idxUser = #{gmIdx}
+			AND idxUser = #{grIdx}
+			AND username = #{username}
+	</select>
+	
+	<!-- 신고 등록 -->
+	<insert id="regReport" parameterType="com.hard.study.vo.report.ReportVo">
+		INSERT INTO report (
+			idxEtc,
+			rType,
+			rOption,
+			idxUser,
+			idxUserGroup,
+			username,
+			target,
+			comments
+		) VALUES (
+			#{idxEtc},
+			#{type},
+			#{opt},
+			#{gmIdx},
+			#{grIdx},
+			#{username},
+			#{target},
+			#{comments}
+		)
+	</insert>
+	
+</mapper>

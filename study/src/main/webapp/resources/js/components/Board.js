@@ -106,6 +106,12 @@ class Board extends Component {
                 
                 // 첨부파일 처리
                 let contentsList = boardList.contentsList;
+
+                // 댓글 갯수
+                let replyCnt = boardList.replyCnt
+                let replyCntStr = new String;
+                replyCnt == 0 ? replyCntStr = "" : replyCntStr = "(" + replyCnt + ")";
+
                 if(contentsList.length != 0){
 
                     let contentsResult = new String;
@@ -137,7 +143,12 @@ class Board extends Component {
                                 "</div>" + 
                             "</div>" + 
                         "</td>" + 
-                        "<td class='boardview' key=" + boardList.idx + ">" + boardList.boardName + "</td>" + 
+                        "<td class='boardview' key=" + boardList.idx + ">" + 
+                            boardList.boardName + 
+                            "<span>" + 
+                                replyCntStr + 
+                            "</span>" + 
+                        "</td>" + 
                         "<td>user</td>" + 
                         "<td>" + boardList.boardViews + "</td>" + 
                         "<td>" + boardList.boardLikes + "</td>" + 
@@ -150,7 +161,12 @@ class Board extends Component {
                     "<tr key=" + boardList.idx + ">" + 
                         "<td>" + boardList.idx + "</td>" + 
                         "<td class='invalidContents'> - </td>" + 
-                        "<td class='boardview' key=" + boardList.idx + ">" + boardList.boardName + "</td>" + 
+                        "<td class='boardview' key=" + boardList.idx + ">" + 
+                            boardList.boardName + 
+                            "<span>" + 
+                                replyCntStr + 
+                            "</span>" + 
+                        "</td>" + 
                         "<td>user</td>" + 
                         "<td>" + boardList.boardViews + "</td>" + 
                         "<td>" + boardList.boardLikes + "</td>" + 
@@ -470,7 +486,7 @@ class Board extends Component {
             checkArray.push(false);
 
         }
-
+        
         this.setState({
             uploadList : fileArray,
             checkList : checkArray,
@@ -677,8 +693,7 @@ class Board extends Component {
 
                 <span>{list.fileName}</span>
                 <span>{list.sizeUnit}</span>
-                <span style={{right: "10px", display: "none"}} onClick={this.uploadDelete} value={i} test={i} data-src={i}>삭제</span>
-
+                
             </li>
             )) : null;
 

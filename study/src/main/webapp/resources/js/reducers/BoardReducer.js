@@ -18,6 +18,33 @@ export const getBoardInfoSuccess = createAction("BOARD_INFO_SUCCESS", (payload) 
 export const like = createAction("LIKE", (param) => (param)); // 좋아요
 export const likeResult = createAction("LIKE_RESULT", (payload) => (payload));
 
+export const reply = createAction("REPLY_REG", (param) => (param)); // 댓글 등록
+export const replySuccess = createAction("REPLY_REG_SUCCESS", (payload) => (payload));
+
+export const getReply = createAction("REPLY", (param) => (param)); // 댓글 정보
+export const getReplySuccess = createAction("REPLY_SUCCESS");
+
+export const comments = createAction("COMMENTS_REG", (param) => (param)); // 덧글 정보
+export const commentsSuccess = createAction("COMMENTS_REG_SUCCESS", (payload) => (payload));
+
+export const modRC = createAction("MODIFY_REPLY_COMMENTS", (param) => (param)); // 댓글, 덧글 수정
+export const modRCSuccess = createAction("MODIFY_RC_SUCCESS");
+
+export const delRC = createAction("DELETE_REPLY_COMMENTS", (param) => (param)); // 댓글, 덧글 삭제
+export const delRCSuccess = createAction("DELETE_RC_SUCCESS");
+
+export const delBoard = createAction("DELETE_BOARD", (param) => (param)); // 게시물 삭제
+export const delBoardSuccess = createAction("DELETE_BOARD_SUCCESS");
+
+export const modBoard = createAction("MODIFY_BOARD", (param) => (param)); // 게시물 수정
+export const modBoardSuccess = createAction("MODIFY_BOARD_SUCCESS");
+
+export const rcLike = createAction("REPLY_COMMENT_LIKE", (param) => (param)); // 댓글 좋아요
+export const rcLikeResult = createAction("REPLY_COMMENT_LIKE_RESULT", (payload) => (payload));
+
+export const report = createAction("REPORT", (param) => (param));
+export const reportResult = createAction("REPORT_RESULT");
+
 export const appError = createAction("APP_ERROR"); // 에러
 
 export const BoardReducer = handleActions({
@@ -56,10 +83,72 @@ export const BoardReducer = handleActions({
 		return {...state, loading: false, likeResult: action.payload.data.resultInteger, like: action.payload.data.likedUser};
 	},
 
+	[reply]: (state, action) => {
+		return {...state, loading: false};
+	},
+	[replySuccess]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+
 	[appError]: (state, action) => {
 		return {...state, loading: false, requestData: action.payload.requestData, message: null, error: action.payload.error};
 	},
 
+	[getReply]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[getReplySuccess]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+
+	[comments]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[commentsSuccess]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+
+	[modRC]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[modRCSuccess]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+	
+	[delRC]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[delRCSuccess]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+	
+	[delBoard]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[delBoardSuccess]: (state, action) => {
+		return {...state, loading: false};
+	},
+	
+	[modBoard]: (state, action) => {
+		return {...state, loading: true};
+	},
+	[modBoardSuccess]: (state, action) => {
+		return {...state, loading: false, result: action.payload.data, payload: action.payload.data, like: action.payload.data.likedUser};
+	},
+
+	[rcLike]: (state, action) => {
+		return {...state, loading: false};
+	},
+	[rcLikeResult]: (state, action) => {
+		return {...state, loading: false, reply: action.payload.data};
+	},
+
+	[report]: (state, action) => {
+		return {...state, loading: false};
+	},
+	[reportResult]: (state, action) => {
+		return {...state, loading: false, report: action.payload.data.resultMessage};
+	}
 
 	
 }, initState);

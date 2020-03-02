@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hard.study.dao.user">
+	
+	<!-- user의 idx -->
+	<select id="getGmIdx" resultType="Integer">
+		SELECT
+			id AS gmIdx
+		FROM
+			group_members
+		WHERE
+			username = #{username}
+	</select>
+	
+	<!-- user의 group_idx -->
+	<select id="getGrIdx" resultType="Integer">
+		SELECT
+			group_id AS grIdx
+		FROM
+			group_members
+		WHERE
+			username = #{username}
+	</select>
+	
+</mapper>

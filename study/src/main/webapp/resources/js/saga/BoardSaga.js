@@ -28,6 +28,15 @@ export function* boardWatch() {
 	yield takeLatest(BoardReducer.getBoardInfo, getBoardInfoAction); // 글 목록
 	yield takeLatest(BoardReducer.regContents, regContentsAction); // 글 상세
 	yield takeLatest(BoardReducer.like, likeAction); // 좋아요
+	yield takeLatest(BoardReducer.reply, replyAction); // 댓글 등록
+	yield takeLatest(BoardReducer.getReply, getReplyAction); // 댓글 목록 가져오기
+	yield takeLatest(BoardReducer.comments, commentsAction); // 덧글 등록
+	yield takeLatest(BoardReducer.modRC, modifyRCAction); // 댓글, 덧글 수정
+	yield takeLatest(BoardReducer.delRC, deleteRCAction); // 댓글, 덧글 삭제
+	yield takeLatest(BoardReducer.delBoard, deleteBoardAction); // 게시물 삭제
+	yield takeLatest(BoardReducer.modBoard, modifyBoardAction); // 게시물 수정
+	yield takeLatest(BoardReducer.rcLike, rcLikeAction); // 댓글 좋아요
+	yield takeLatest(BoardReducer.report, reportAction); // 신고
 }
 
 // 콘텐츠 업로드
@@ -35,27 +44,6 @@ function* regContentsAction(textObj) {
 	
 	try{
 		
-		/*
-		const testForm = new FormData();
-		const fileParam = contentsArray.payload;
-		
-		// 동적 FormData일 때
-		const formDataArr = new Array;
-
-		console.log("fileParam = " + fileParam);
-		console.log("fileParam length = " + fileParam.length);
-
-		const testForm = new FormData();
-		contentsArray.payload.map((params, i) => {
-
-			testForm.append("randomNames", params.randomName);
-			testForm.append("files", params.file);
-
-		});
-
-		const fdResult = yield call([axiosFormData, axiosFormData.post], "/regcontents", testForm);
-		*/
-
 		let param = new FormData();
 		const regParam = textObj.payload;
 		
@@ -75,10 +63,6 @@ function* regContentsAction(textObj) {
 				param.append(key, regParam[key]);
 			}
 
-		}
-		
-		for(let key of param) {
-			console.log("param = " + key);
 		}
 		
 		const fdResult = yield call([axiosFormData, axiosFormData.post], "/regcontents", param);
@@ -126,7 +110,7 @@ function* getBoardInfoAction(boardIdx) {
 		yield put(BoardReducer.getBoardInfoSuccess(result));
 		
 	} catch(error) {
-
+		yield put(BoardReducer.appError(error));
 	}
 
 }
@@ -142,6 +126,179 @@ function* likeAction(param) {
 		document.getElementById("board_likes").innerHTML = result.data.resultInteger;
 
 	} catch(error) {
+		yield put(BoardReducer.appError(error));
+	}
+}
 
+// 댓글 등록
+function* replyAction(param) {
+	try {
+		
+		let data = new FormData();
+		const params = param.payload;
+
+		for(let key in params){
+			data.append(key, params[key]);
+		}
+
+		// const result = yield call([axiosStudy, axiosStudy.post], "/boardlike", data); // study는 content-type이 정해져 있기 때문에 axiosFormData 사용
+		const result = yield call([axiosFormData, axiosFormData.post], "/regreply", data); // 파일 넘기기 위해서 사용 ( 파일 없을 수도 있을 수도 있기 때문 )
+		yield put(BoardReducer.replySuccess(result));
+
+	} catch(error) {
+		yield put(BoardReducer.appError(error));
+	}
+}
+
+// 댓글 목록 가져오기
+function* getReplyAction(param) {
+	
+	try{
+
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/getreply", data);
+
+		yield put(BoardReducer.getReplySuccess(result));
+
+	} catch(error) {
+
+	}
+
+}
+
+// 덧글 등록
+function* commentsAction(param) {
+	
+	try {
+
+		let data = new FormData();
+		const params = param.payload;
+
+		for(let key in params){
+			data.append(key, params[key]);
+		}
+		
+		const result = yield call([axiosFormData, axiosFormData.post], "/regcomments", data);
+		yield put(BoardReducer.commentsSuccess(result));
+
+	} catch(error) {
+
+	}
+
+}
+
+// 댓글, 덧글 수정
+function* modifyRCAction(param) {
+
+	try {
+
+		let data = new FormData();
+		const params = param.payload;
+
+		for(let key in params){
+			data.append(key, params[key]);
+		}
+		
+		const result = yield call([axiosFormData, axiosFormData.post], "/modifyrc", data);
+		yield put(BoardReducer.modRCSuccess(result));
+
+	} catch(error) {
+
+	}
+
+}
+
+// 댓글, 덧글 삭제
+function* deleteRCAction(param) {
+
+	try {
+
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/deleterc", data);
+		yield put(BoardReducer.delRCSuccess(result));
+
+	} catch(error) {
+
+	}
+
+}
+
+// 게시물 삭제
+function* deleteBoardAction(param) {
+
+	try {
+
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/deleteboard", data);
+
+		location.href="/study/board";
+		
+	} catch(error) {
+
+	}
+
+}
+
+// 게시물 수정
+function* modifyBoardAction(param) {
+
+	try{
+		
+		let fd = new FormData();
+		const modParam = param.payload;
+		
+		for(let key in modParam){
+			
+			if(key == "upldList"){
+				modParam[key].map((data) => {
+					for(let key in data){
+						fd.append(key, data[key]);
+					}
+				});
+			} else if(key == "delList") {
+				modParam[key].map((data) => {
+					for(let key in data){
+						fd.append(key, data[key]); // rCode만 들어가있음
+					}
+				});
+			} else {
+				fd.append(key, modParam[key]);
+			}
+			
+		}
+
+		const fdResult = yield call([axiosFormData, axiosFormData.post], "/modcontents", fd);
+		yield put(BoardReducer.modBoardSuccess(fdResult));
+
+	} catch(error) {
+		
+		yield put(BoardReducer.appError(error));
+		
+	}
+}
+
+// 댓글 좋아요
+function* rcLikeAction(param) {
+	try {
+		
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/rclike", data);
+		yield put(BoardReducer.rcLikeResult(result));
+
+	} catch(error) {
+		yield put(BoardReducer.appError(error));
+	}
+}
+
+// 신고
+function* reportAction(param) {
+	try {
+		
+		const data = param.payload;
+		const result = yield call([axiosStudy, axiosStudy.post], "/report", data);
+		yield put(BoardReducer.reportResult(result));
+		
+	} catch(error) {
+		yield put(BoardReducer.appError(error));
 	}
 }

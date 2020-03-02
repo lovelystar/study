@@ -33,7 +33,7 @@
 			originalName,
 			randomName,
 			filePath,
-			<!-- fileBytes, -->
+			fileSize,
 			mimeType,
 			idxUser,
 			idxUserGroup
@@ -43,7 +43,7 @@
 			#{originalName},
 			#{randomName},
 			#{filePath},
-			<!-- #{fileBytes}, -->
+			#{fileSize},
 			#{mimeType},
 			#{idxUser},
 			#{idxUserGroup}
@@ -87,6 +87,7 @@
 			fileName AS fileName,
 			originalName AS originalName,
 			randomName AS randomName,
+			fileSize AS fileSize,
 			mimeType AS mimeType,
 			idxUser AS idxUser,
 			idxUserGroup AS idxUserGroup,
@@ -97,6 +98,17 @@
 			idxBoard = #{idxBoard}
 		ORDER BY
 			idx;
+	</select>
+	
+	<!-- 댓글 갯수 -->
+	<select id="replyCnt" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			reply
+		WHERE
+			replyable = 1
+			AND idxBoard = #{idxBoard}
 	</select>
 	
 	<!-- 좋아요 목록 ( 유저 리스트 ) -->
@@ -128,7 +140,6 @@
 			idx = #{idxBoard}
 	</update>
 	
-	
 	<!-- 글 상세 -->
 	<select id="getBoardInfo" resultType="java.util.HashMap">
 		SELECT
@@ -144,6 +155,9 @@
 				WHERE
 					idxBoard = #{idxBoard}
 			) AS boardLikes,
+			idxUser AS idxUser,
+			idxUserGroup AS idxUserGroup,
+			username AS username,
 			regdate AS regdate,
 			uptdate AS uptdate
 		FROM
@@ -185,4 +199,349 @@
 			AND username = #{username}
 			
 	</delete>
+	
+	<!-- 댓글 등록 ( 텍스트 ) -->
+	<insert id="regReplyContents" parameterType="com.hard.study.vo.comment.ReplyVo">
+		INSERT INTO
+			reply (
+				idxBoard,
+				boardType,
+				idxUser,
+				idxUserGroup,
+				username,
+				nickname,
+				contents,
+				regdate,
+				uptdate
+			) VALUES (
+				#{idxBoard},
+				#{boardType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				#{nickname},
+				#{contents},
+				NOW(),
+				NOW()
+			)
+	</insert>
+	
+	<!-- 댓글 등록 ( 첨부 ) -->
+	<insert id="regReplyImage" parameterType="com.hard.study.vo.comment.ReplyVo">
+		INSERT INTO
+			reply (
+				idxBoard,
+				boardType,
+				idxUser,
+				idxUserGroup,
+				username,
+				nickname,
+				imgValue,
+				regdate,
+				uptdate
+			) VALUES (
+				#{idxBoard},
+				#{boardType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				#{nickname},
+				#{imgValue},
+				NOW(),
+				NOW()
+			)
+	</insert>
+	
+	<!-- 댓글 갯수 -->
+	<select id="replyTotal" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			reply
+		WHERE
+			replyable = 1
+			AND idxBoard = #{idxBoard}
+	</select>
+	
+	<!-- 댓글 갯수 -->
+	<select id="commentsTotal" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			comments
+		WHERE
+			commentable = 1
+			AND idxBoard = #{idxBoard}
+	</select>
+	
+	<!-- 댓글 목록 -->
+	<select id="getReply" resultType="com.hard.study.vo.comment.ReplyVo">
+		SELECT
+			idx AS idx,
+			idxBoard AS idxBoard,
+			idxUser AS gmIdx,
+			idxUserGroup AS grIdx,
+			username AS username,
+			nickname AS nickname,
+			contents AS contents,
+			imgValue AS imgValue,
+			replyable AS replyable,
+			uptdate AS uptdate
+		FROM
+			reply
+		WHERE
+			idxBoard = #{idxBoard}
+			<!-- AND replyable = 1 -->
+		ORDER BY
+			idx
+		ASC
+		LIMIT
+			#{pageStart}, #{perPageNum};
+	</select>
+	
+	<select id="getComments" resultType="com.hard.study.vo.comment.CommentsVo">
+		SELECT
+			idx AS idx,
+			idxBoard AS idxBoard,
+			idxReply AS idxReply,
+			idxUser AS gmIdx,
+			idxUserGroup AS grIdx,
+			username AS username,
+			nickname AS nickname,
+			contents AS contents,
+			imgContents AS imgValue,
+			commentable AS commentable,
+			uptdate AS uptdate
+		FROM
+			comments
+		WHERE
+			idxReply = #{idx}
+			AND idxBoard = #{idxBoard}
+			<!-- AND commentable = 1 -->
+		ORDER BY
+			idx
+		ASC;
+	</select>
+	
+	<!-- 댓글 좋아요 -->
+	<select id="replyLikes" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			reply_likes
+		WHERE
+			idxReply = #{idx}
+			AND idxBoard = #{idxBoard}
+	</select>
+	
+	<!-- 댓글 좋아요 유저 -->
+	<select id="replyLikedUser" resultType="String">
+		SELECT
+			username
+		FROM
+			reply_likes
+		WHERE
+			idxReply = #{idx}
+			AND idxBoard = #{idxBoard}
+	</select>
+	
+	<!-- 덧글 갯수 -->
+	<select id="commentsCnt" resultType="Integer">
+		SELECT
+			COUNT(idx)
+		FROM
+			comments
+		WHERE
+			commentable = 1
+			AND idxReply = #{idx}
+			AND idxBoard = #{idxBoard}
+	</select>
+	
+	<!-- 덧글 등록 ( 텍스트 ) -->
+	<insert id="regCommentsContents" parameterType="com.hard.study.vo.comment.ReplyVo">
+		INSERT INTO
+			comments (
+				idxBoard,
+				idxReply,
+				boardType,
+				idxUser,
+				idxUserGroup,
+				username,
+				nickname,
+				contents,
+				regdate,
+				uptdate
+			) VALUES (
+				#{idxBoard},
+				#{idxReply},
+				#{boardType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				#{nickname},
+				#{contents},
+				NOW(),
+				NOW()
+			)
+	</insert>
+	
+	<!-- 덧글 등록 ( 첨부 ) -->
+	<insert id="regCommentsImage" parameterType="com.hard.study.vo.comment.ReplyVo">
+		INSERT INTO
+			comments (
+				idxBoard,
+				idxReply,
+				boardType,
+				idxUser,
+				idxUserGroup,
+				username,
+				nickname,
+				imgContents,
+				regdate,
+				uptdate
+			) VALUES (
+				#{idxBoard},
+				#{idxReply},
+				#{boardType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				#{nickname},
+				#{imgValue},
+				NOW(),
+				NOW()
+			)
+	</insert>
+	
+	<!-- 댓글, 덧글 수정 ( 댓글 + contents ) -->
+	<update id="uptReplyConts">
+		UPDATE
+			reply
+		SET
+			contents = #{contents},
+			uptdate = NOW()
+		WHERE
+			idx = #{idx};
+	</update>
+	
+	<!-- 댓글, 덧글 수정 ( 댓글 + img ) -->
+	<update id="uptReplyImg">
+		UPDATE
+			reply
+		SET
+			imgValue = #{imgName},
+			uptdate = NOW()
+		WHERE
+			idx = #{idx};
+	</update>
+	
+	<!-- 댓글, 덧글 수정 ( 덧글 + contents ) -->
+	<update id="uptCommentsConts">
+		UPDATE
+			comments
+		SET
+			contents = #{contents},
+			uptdate = NOW()
+		WHERE
+			idx = #{idx};
+	</update>
+	
+	<!-- 댓글, 덧글 수정 ( 덧글 + img ) -->
+	<update id="uptCommentsImg">
+		UPDATE
+			comments
+		SET
+			imgContents = #{imgName},
+			uptdate = NOW()
+		WHERE
+			idx = #{idx};
+	</update>
+	
+	<!-- 댓글, 덧글 삭제 ( 댓글 )-->
+	<update id="delReply">
+		UPDATE
+			reply
+		SET
+			replyable = 0,
+			uptdate = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+	
+	<!-- 댓글, 덧글 삭제 ( 덧글 )-->
+	<update id="delComments">
+		UPDATE
+			comments
+		SET
+			commentable = 0,
+			uptdate = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+	
+	<!-- 게시물 삭제 ( 덧글 )-->
+	<update id="delBoard">
+		UPDATE
+			board
+		SET
+			boardable = 0,
+			uptdate = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<insert id="modBoard" parameterType="com.hard.study.vo.board.BoardVo" useGeneratedKeys="true" keyProperty="idxBoard" keyColumn="idx">
+		UPDATE
+			board
+		SET
+			boardName = #{boardName},
+			boardDetails = #{boardDetails}
+		WHERE
+			idx = #{idx}
+	</insert>
+	
+	<!-- 글에 첨부된 파일 삭제 -->
+	<delete id="delFiles" parameterType="com.hard.study.vo.board.BoardVo">
+		DELETE FROM
+			contents
+		WHERE
+			randomName = #{randomName}
+	</delete>
+	
+	<!-- 댓글 좋아요 추가 -->
+	<insert id="addRcLike" parameterType="com.hard.study.vo.comment.ReplyLikeVo">
+		INSERT INTO
+			reply_likes (
+				idxReply,
+				idxBoard,
+				replyType,
+				idxUser,
+				idxUserGroup,
+				username,
+				regdate
+			) VALUES (
+				#{idxReply},
+				#{idxBoard},
+				#{replyType},
+				#{gmIdx},
+				#{grIdx},
+				#{username},
+				NOW()
+			)
+	</insert>
+	
+	<!-- 댓글 좋아요 빼기 -->
+	<delete id="subRcLike" parameterType="com.hard.study.vo.comment.ReplyLikeVo">
+		DELETE FROM
+			reply_likes
+		WHERE
+			idxReply = #{idxReply}
+			AND idxBoard = #{idxBoard}
+			AND replyType = #{replyType}
+			AND idxUser = #{gmIdx}
+			AND idxUserGroup = #{grIdx}
+			AND username = #{username}
+	</delete>
+	
 </mapper>
