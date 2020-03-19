@@ -29,6 +29,7 @@ import Portfolio from "../components/Portfolio";
 import Boardview from "../components/Boardview";
 import Socketroom from "../components/Socketroom";
 import Sockettoken from "../components/Sockettoken";
+import Calendar from "../components/Calendar";
 
 class Router extends Component {
 	
@@ -55,6 +56,7 @@ class Router extends Component {
 						<Route path="/study/boardview" exact component={Boardview} />
 						<Route path="/study/roomsocket" exact component={Socketroom} />
 						<Route path="/study/tokensocket" exact component={Sockettoken} />
+						<Route path="/study/calendar" exact component={Calendar} />
 					</Switch>
 				</BRouter>
 		);
