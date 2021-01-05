@@ -62,7 +62,7 @@
 		]
 	},
 	"dependencies": {
-		"axios": "^0.19.0",
+		"axios": "^0.21.1",
 		"bootstrap": "^4.4.1",
 		"include-media": "^1.4.9",
 		"jquery": "^3.4.1",
