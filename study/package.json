@@ -70,7 +70,7 @@
 		"moment": "^2.24.0",
 		"node-sass": "^4.13.0",
 		"open-color": "^1.7.0",
-		"postcss": "^7.0.23",
+		"postcss": "^8.2.10",
 		"postcss-loader": "^3.0.0",
 		"react": "^16.9.0",
 		"react-cookie": "^4.0.1",
